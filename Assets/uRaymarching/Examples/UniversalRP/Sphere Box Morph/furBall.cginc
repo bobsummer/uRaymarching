@@ -1,6 +1,9 @@
 #ifndef FURBLL_INCLUDED
 #define FURBLL_INCLUDED
 
+#define PI  3.14159
+#define PI2 PI*2.0
+
 inline float sdSphere(float3 pos, float radius)
 {
     return length(pos) - radius;
@@ -15,7 +18,7 @@ float2 rot( in float2 p, in float an )
 {
     float cc = cos(an);
     float ss = sin(an);
-    return mat2(cc,-ss,ss,cc)*p;
+    return mul(float2x2(cc,-ss,ss,cc),p);
 }
 
 // https://iquilezles.org/articles/smin
@@ -37,18 +40,18 @@ float3 sdif( float ndl, float ir )
 {
     float pndl = clamp( ndl, 0.0, 1.0 );
     float nndl = clamp(-ndl, 0.0, 1.0 );
-    return float3(pndl) + float3(1.0,0.1,0.01)*0.7*pow(clamp(ir*0.75-nndl,0.0,1.0),2.0);
+    return float3(pndl.xxx) + float3(1.0,0.1,0.01)*0.7*pow(clamp(ir*0.75-nndl,0.0,1.0),2.0);
 }
 
 //perp distance
 // <0 on ray's negatvie direction
 // >0 on ray's positive direction
-float dist_point_ray(float3 point,float3 ray_start,float3 ray_dir)
+float dist_point_ray(float3 pt,float3 ray_start,float3 ray_dir)
 {
-	float3 ray_pt = point-ray_start;
+	float3 ray_pt = pt-ray_start;
 	float fDot = dot(ray_pt,ray_dir);
 	float3 pt_on_ray = ray_start + ray_dir*fDot;
-	return distance(point,pt_on_ray)*(fDot/abs(fDot));
+	return distance(pt,pt_on_ray)*(fDot/abs(fDot));
 }
 
 bool ray_intersect_sphere(float3 ray_start,float3 ray_dir,float3 sphere_center,float sphere_radius)
@@ -137,7 +140,7 @@ float3 cartesianToSpherical(float3 p,float3 center)
 	float3 uvr;		
 	uvr.z = length(p);
 	p /= uvr.z;
-	uvr.xy = vec2(atan(p.z, p.x), acos(p.y));
+	uvr.xy = float2(atan2(p.z, p.x), acos(p.y));
 	return uvr;
 }
 

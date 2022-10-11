@@ -19,14 +19,14 @@ Shader "Unlit/furBall"
         _UplidOffset("UplidOffset",Vector) = (0.0,-0.2,-0.0)
         _DownlidOffset("DownlidOffset",Vector) = (0.0,0.0,0.0)
         
-        _Uplid_Start_Range("Uplid_Start_Range",Vector) = (-1.8,3.9) 
-        _Downlid_Start_Range("Downlid_Start_Range",Vector) = (1.8,-3.9)
+        _Uplid_Start_Range("Uplid_Start_Range",Vector) = (-1.8,3.9,0.0)
+        _Downlid_Start_Range("Downlid_Start_Range",Vector) = (1.8,-3.9,0.0)
 
-        _UpDownLid_XYRot("UpDownLid_XYRot",Vector) = (0.6,-0.6)
+        _UpDownLid_XYRot("UpDownLid_XYRot",Vector) = (0.6,-0.6,0.0)
 
-        _Iris_UV("Iris_UV",Vector) = (0.5,0.5)
+        _Iris_UV("Iris_UV",Vector) = (0.5,0.5,0.0)
         _IrisColor("IrisColor", Color) = (0.09,0.0315,0.0135)
-        _IrisSize("IrisSize", Range(0.1,1.0))
+        _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
     }
     SubShader
     {
@@ -42,6 +42,8 @@ Shader "Unlit/furBall"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "./furBall.cginc"
+
 
             struct appdata
             {
@@ -56,6 +58,9 @@ Shader "Unlit/furBall"
                 float4 vertex : SV_POSITION;
             };
 
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -65,8 +70,7 @@ Shader "Unlit/furBall"
                 return o;
             }
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+
 
             float _FurDepth;
 
@@ -75,9 +79,9 @@ Shader "Unlit/furBall"
 	            float r = length(p);
 	            float t = (r - (1.0 - _FurDepth)) / _FurDepth;
 
-	            float3x3 inv_tbn = inverse(tbn);
+	            float3x3 inv_tbn = transpose(tbn);
 
-	            float3 linear_vel = float3(0.0);
+	            float3 linear_vel = 0.0;
 
 	            float len_anglular_axis = length(angular_vel);
 	            if(len_anglular_axis>0.0)
@@ -89,18 +93,18 @@ Shader "Unlit/furBall"
 		            linear_vel = cross(angular_vel,vR);
 	            }
 
-	            float3  vel_tbn = inv_tbn * vel;
+	            float3  vel_tbn = mul(inv_tbn,vel);
 	            vel_tbn *= 1.0;  //vel param
 
-	            float3  linear_vel_tbn = inv_tbn * linear_vel;
+	            float3  linear_vel_tbn = mul(inv_tbn,linear_vel);
 
 	            linear_vel_tbn *= 0.03; //angular param
 	            vel_tbn += linear_vel_tbn;
 
-	            // float3 offset = cos(iTime*1.5)*t*t*0.4 * float3(0.0,1.0,0.0);
+	            // float3 offset = cos(_Time.y*1.5)*t*t*0.4 * float3(0.0,1.0,0.0);
 	            float3 offset = float3(vel_tbn.x,vel_tbn.y,0.0);
 	            offset *= 0.2*t*t;
-	            offset = tbn*offset;
+	            offset = mul(tbn,offset);
 
 	            // offset = float3(0.0);
 
@@ -115,9 +119,9 @@ Shader "Unlit/furBall"
 	            float3x3 tbn;
 	            posToTangentSpace(pos,tbn);
 
-	            float3 vel = float3(-1.5*sin(1.5*iTime),-1.5*sin(1.5*iTime),0.0);
+	            float3 vel = float3(-1.5*sin(1.5* _Time.y),-1.5*sin(1.5* _Time.y),0.0);
 	            // vel = float3(0.0);
-	            float3 angular_vel = float3(0.0,-30.0*2.2*sin(2.2*iTime),0.0);
+	            float3 angular_vel = float3(0.0,-30.0*2.2*sin(2.2* _Time.y),0.0);
 	            // angular_vel = float3(0.0);
 
 	            float3 nrm_pos = normalize(pos);
