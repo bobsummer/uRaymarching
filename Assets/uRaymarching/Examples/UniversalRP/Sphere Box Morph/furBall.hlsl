@@ -1,6 +1,9 @@
 #ifndef FURBLL_INCLUDED
 #define FURBLL_INCLUDED
 
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
+
 #define PI  3.14159
 #define PI2 PI*2.0
 
@@ -159,6 +162,42 @@ float3 sphericalToCartesian(float3 uvr,float3 center)
 	pos *= uvr.z;
 	pos += center;
 	return pos;
+}
+
+struct RaymarchInfo
+{
+    // Input
+    float3 startPos;
+    float3 rayDir;
+    float3 polyNormal;
+    float4 projPos;
+    float minDistance;
+    float maxDistance;
+    int maxLoop;
+
+    // Output
+    int loop;
+    float3 endPos;
+    float lastDistance;
+    float totalLength;
+    float depth;
+    float3 normal;
+};
+
+inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float3 normalWS)
+{
+    ray = (RaymarchInfo)0;
+    ray.rayDir = normalize(positionWS - GetCameraPosition());
+    ray.projPos = positionSS;
+    ray.startPos = positionWS;
+    ray.polyPos = positionWS;
+    ray.polyNormal = normalize(normalWS);
+    ray.maxDistance = GetCameraFarClip();
+}
+
+inline float3 ToLocal(float3 pos)
+{
+    return mul(unity_WorldToObject, float4(pos, 1.0)).xyz;
 }
 
 #endif

@@ -142,9 +142,6 @@ Pass
     #pragma exclude_renderers d3d11_9x
     #pragma target 2.0
 
-    #define RAY_STARTS_FROM_DEPTH_TEXTURE
-    #define CHECK_DEPTH_PREPASS
-
     #pragma vertex Vert
     #pragma fragment Frag
     #include "Assets/uRaymarching/Runtime/Shaders/Include/UniversalRP/ForwardLit.hlsl"
