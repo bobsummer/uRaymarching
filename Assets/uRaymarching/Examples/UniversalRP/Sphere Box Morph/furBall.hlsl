@@ -4,8 +4,8 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
 
-#define PI  3.14159
-#define PI2 PI*2.0
+//#define PI  3.14159
+//#define PI2 PI*2.0
 
 inline float sdSphere(float3 pos, float radius)
 {
@@ -169,6 +169,7 @@ struct RaymarchInfo
     // Input
     float3 startPos;
     float3 rayDir;
+	float3 polyPos;
     float3 polyNormal;
     float4 projPos;
     float minDistance;
@@ -184,12 +185,22 @@ struct RaymarchInfo
     float3 normal;
 };
 
+inline float3 GetCameraPosition()    
+{ 
+	return UNITY_MATRIX_I_V._m03_m13_m23; 
+}
+
+inline float  GetCameraFarClip()     
+{ 
+	return _ProjectionParams.z;       
+}
+
 inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float3 normalWS)
 {
     ray = (RaymarchInfo)0;
     ray.rayDir = normalize(positionWS - GetCameraPosition());
     ray.projPos = positionSS;
-    ray.startPos = positionWS;
+    ray.startPos = GetCameraPosition();
     ray.polyPos = positionWS;
     ray.polyNormal = normalize(normalWS);
     ray.maxDistance = GetCameraFarClip();
@@ -197,7 +208,20 @@ inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 p
 
 inline float3 ToLocal(float3 pos)
 {
-    return mul(unity_WorldToObject, float4(pos, 1.0)).xyz;
+    return mul(GetWorldToObjectMatrix(), float4(pos, 1.0)).xyz;
+}
+
+inline float3 WorldPos()
+{
+	return GetObjectToWorldMatrix()._m03_m13_m23;
+}
+
+inline float4 ComputeNonStereoScreenPos(float4 pos)
+{
+    float4 o = pos * 0.5f;
+    o.xy = float2(o.x, o.y * _ProjectionParams.x) + o.w;
+    o.zw = pos.zw;
+    return o;
 }
 
 #endif
