@@ -2,9 +2,10 @@ Shader "Unlit/furBall"
 {
     Properties
     {
+		[Header(Base)]
         _MainTex ("Texture", 2D) = "white" {}
         _UVScale ("UVScale", Range(1,5)) = 2
-        _Radius ("Radius", Range(1,3)) = 1
+        _Radius ("Radius", Range(0.1,3)) = 1
         _FurDepth ("FurDepth", Range(0.1,0.8)) = 0.4
         _FurLayer ("FurLayer", Int) = 800
         _FurStepMulti("FurStepMulti",Range(2.0,5.0)) = 3.0
@@ -27,14 +28,32 @@ Shader "Unlit/furBall"
         _Iris_UV("Iris_UV",Vector) = (0.5,0.5,0.0)
         _IrisColor("IrisColor", Color) = (0.09,0.0315,0.0135)
         _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
+
+		[Header(Pass)]
+		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
+		[Enum(UnityEngine.Rendering.BlendMode)] _BlendSrc("Blend Src", Float) = 5
+		[Enum(UnityEngine.Rendering.BlendMode)] _BlendDst("Blend Dst", Float) = 10
+		[Toggle][KeyEnum(Off, On)] _ZWrite("ZWrite", Float) = 1
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+		Tags
+		{
+			"RenderType" = "Transparent"
+			"Queue" = "Transparent"
+			"IgnoreProjector" = "True"
+			"RenderPipeline" = "UniversalPipeline"
+			"DisableBatching" = "True"
+		}
         LOD 100
 
         Pass
         {
+
+			Blend[_BlendSrc][_BlendDst]
+			ZWrite[_ZWrite]
+			Cull[_Cull]
+
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
@@ -322,7 +341,7 @@ Shader "Unlit/furBall"
 				float3 localRayDir = ToLocal(ray.rayDir);
 
 				//localRayStart = ray.startPos;
-				//localRayDir = ray.rayDir;
+				localRayDir = ray.rayDir;
 
 				float t;				  
 				bool hit = intersectSphere(localRayStart, localRayDir, _Radius, t);
@@ -532,8 +551,8 @@ Shader "Unlit/furBall"
 				return c;
 			}
 
-            float4 Frag (Varyings input) : SV_Target
-            {
+			float4 Frag(Varyings input) : SV_Target
+			{
 				float turn = 0.0;
 
 				animData.x = animBlink(_Time.y,0.0);
