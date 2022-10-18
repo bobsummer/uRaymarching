@@ -206,9 +206,15 @@ inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 p
     ray.maxDistance = GetCameraFarClip();
 }
 
-inline float3 ToLocal(float3 pos)
+inline float3 PosToLocal(float3 pos)
 {
-    return mul(GetWorldToObjectMatrix(), float4(pos, 1.0)).xyz;
+    //return mul(GetWorldToObjectMatrix(), float4(pos, 1.0)).xyz;
+	return TransformWorldToObject(pos);
+}
+
+inline float3 DirToLocal(float3 dir,bool doNormalize = false)
+{
+	return TransformWorldToObjectDir(dir,doNormalize);
 }
 
 inline float3 WorldPos()

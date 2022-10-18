@@ -5,8 +5,9 @@ Shader "Unlit/furBall"
 		[Header(Base)]
         _MainTex ("Texture", 2D) = "white" {}
         _UVScale ("UVScale", Range(1,5)) = 2
-        _Radius ("Radius", Range(0.1,3)) = 1
+        _Radius ("Radius", Range(0.1,0.5)) = 0.5
         _FurDepth ("FurDepth", Range(0.1,0.8)) = 0.4
+		_FurDepthScale ("_FurDepthScale", Int) = 3
         _FurLayer ("FurLayer", Int) = 800
         _FurStepMulti("FurStepMulti",Range(2.0,5.0)) = 3.0
         _FurThreshold("FurThreshold",Range(0.1,0.9)) = 0.4
@@ -28,6 +29,7 @@ Shader "Unlit/furBall"
         _Iris_UV("Iris_UV",Vector) = (0.5,0.5,0.0)
         _IrisColor("IrisColor", Color) = (0.09,0.0315,0.0135)
         _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
+		_HighlightOffset("HighlightOffset",Vector) = (-0.05,0.05,0.0)
 
 		[Header(Pass)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
@@ -55,6 +57,9 @@ Shader "Unlit/furBall"
 			Cull[_Cull]
 
             HLSLPROGRAM
+
+			#define OPEN_FUR
+
             #pragma vertex Vert
             #pragma fragment Frag
             // make fog work
@@ -97,7 +102,9 @@ Shader "Unlit/furBall"
             float  _UVScale;
             float  _Radius;
             float  _FurDepth;
+			int    _FurDepthScale;
             float  _FurThreshold;
+			int    _FurLayer;
             float4 _Eyeball_Pos_Scale; 
             float4 _BlockBall_Offset_Scale;
             float  _Shininess;
@@ -110,12 +117,14 @@ Shader "Unlit/furBall"
 			float2 _Iris_UV;
 			float  _IrisSize;
 			float4 _IrisColor;
+			float2 _HighlightOffset;
 
-			float3 animData;
+			float3 animData;			
 
             float3 curl(float3 p,float3x3 tbn,float3 vel,float3 angular_vel)
             {
 	            float r = length(p);
+				r /= _Radius;
 	            float t = (r - (1.0 - _FurDepth)) / _FurDepth;
 
 	            float3x3 inv_tbn = transpose(tbn);
@@ -159,14 +168,15 @@ Shader "Unlit/furBall"
 	            posToTangentSpace(pos,tbn);
 
 	            float3 vel = float3(-1.5*sin(1.5* _Time.y),-1.5*sin(1.5* _Time.y),0.0);
-	            // vel = float3(0.0);
+	            vel = 0.0;
 	            float3 angular_vel = float3(0.0,-30.0*2.2*sin(2.2* _Time.y),0.0);
-	            // angular_vel = float3(0.0);
+	            angular_vel = 0.0;
 
 	            float3 nrm_pos = normalize(pos);
 	            nrm_pos.x = abs(nrm_pos.x);
 
 	            float3 blockball_pos = _Eyeball_Pos_Scale.xyz+_BlockBall_Offset_Scale.xyz;
+				blockball_pos *= _Radius;
 
 	            if(ray_intersect_sphere(0.0,nrm_pos,blockball_pos,_Radius*_Eyeball_Pos_Scale.w*_BlockBall_Offset_Scale.w))
 	            {
@@ -178,9 +188,10 @@ Shader "Unlit/furBall"
 	            float3 uvr = cartesianToSpherical(pos,0.0);
 	            uv = uvr.xy;
 	            float r = uvr.z;
+				r /= _Radius;
 
 	            float t = (r - (1.0 - _FurDepth)) / _FurDepth;
-	            uv.y -= t*t*0.2;	// curl down
+	            //uv.y -= t*t*0.2;	// curl down
 
 	            float4 tex = tex2Dlod(_MainTex, float4(uv*_UVScale,0,0));
                 // float4 tex = float4(1.0);
@@ -226,6 +237,7 @@ Shader "Unlit/furBall"
 
 	            // darken with depth
 	            float r = length(pos);
+				r /= _Radius;
 	            float t = (r - (1.0 - _FurDepth)) / _FurDepth;
 	            t = clamp(t, 0.0, 1.0);
 	            float i = t*0.5+0.5;
@@ -239,7 +251,7 @@ Shader "Unlit/furBall"
 				float3 qos = float3(abs(pos.x),pos.yz); //sharp
 				// float3 sos = float3(sqrt(qos.x*qos.x+0.0005),pos.yz); //smooth
 
-				float d = sdSphere(pos,1.0-_FurDepth);
+				float d = sdSphere(pos,(1.0-_FurDepth)*_Radius);
 
 				float4 ret = 0.0;
 
@@ -247,13 +259,13 @@ Shader "Unlit/furBall"
 				outMat = 1.0;
 				uvw = pos;
 
-				// return ret;
+				//return ret;
 	
 				//eyelid
-				float3 oos = qos - _Eyeball_Pos_Scale.xyz;
-				float d2 = sdSphere(oos,_Radius*_Eyeball_Pos_Scale.w + _EyelidThickness);
+				float3 oos = qos - _Eyeball_Pos_Scale.xyz*_Radius;
+				float d2 = sdSphere(oos,_Radius*(_Eyeball_Pos_Scale.w + _EyelidThickness));
 	
-				oos += _UplidOffset;
+				oos += _UplidOffset * _Radius;
 
 				// oos.z += 0.2;
 				// oos.y += -0.0;
@@ -261,15 +273,17 @@ Shader "Unlit/furBall"
 				oos.xy = rot(oos.xy, _UpDownLid_XYRot.x);
 				oos.yz = rot(oos.yz,_Uplid_Start_Range.x+_Uplid_Start_Range.y*animData.x);
 
-				float3 eos = qos - _Eyeball_Pos_Scale.xyz;
+				float3 eos = qos - _Eyeball_Pos_Scale.xyz*_Radius;
 
-				eos += _DownlidOffset;
+				eos += _DownlidOffset * _Radius;
 				eos.xy = rot(eos.xy, _UpDownLid_XYRot.y);
 				eos.yz = rot(eos.yz,_Downlid_Start_Range.x+_Downlid_Start_Range.y*animData.x);
 
-				d2 = smax(d2-0.005, -max(oos.y+0.098,-eos.y-0.025), 0.06 );
-				d2 = smin(d2,d,0.1);
+				d2 = smax(d2-0.005*_Radius, -max(oos.y+0.098*_Radius,-eos.y-0.025*_Radius), 0.06*_Radius );
+				d2 = smin(d2,d,0.1*_Radius);
 				// d2 = min(d2,d);
+
+				//d2 = d;
 
 				ret.x = d2;
 				outMat = 1.0;
@@ -279,7 +293,7 @@ Shader "Unlit/furBall"
 
 				//eyeball
 				// pos.x /= 1.05;
-				eos = qos-_Eyeball_Pos_Scale.xyz;
+				eos = qos-_Eyeball_Pos_Scale.xyz*_Radius;
 				d = sdSphere(eos,_Eyeball_Pos_Scale.w*_Radius);
 
 				if(d<ret.x)
@@ -337,11 +351,8 @@ Shader "Unlit/furBall"
             
 			float4 scene(inout RaymarchInfo ray)
 			{
-				float3 localRayStart = ToLocal(ray.startPos);
-				float3 localRayDir = ToLocal(ray.rayDir);
-
-				//localRayStart = ray.startPos;
-				localRayDir = ray.rayDir;
+				float3 localRayStart = PosToLocal(ray.startPos);
+				float3 localRayDir = DirToLocal(ray.rayDir,true);
 
 				float t;				  
 				bool hit = intersectSphere(localRayStart, localRayDir, _Radius, t);
@@ -352,7 +363,7 @@ Shader "Unlit/furBall"
 				float4 c = 0.0;
 				if (hit) 
                 {
-					return 1;
+					//return 1;
 					float3 cma = 0.0;
 					float mat_ID = 0.0;
 					float3 pos = localRayStart + localRayDir*t;
@@ -412,7 +423,7 @@ Shader "Unlit/furBall"
 				
 							focc *= 1.0-smoothstep(1.0,1.3,1.7*uvw.y-uvw.x);
 
-							// col = float3(0.0);
+							//col = 0.0;
 				
 							//frsha = 0.0;
 						}
@@ -429,7 +440,7 @@ Shader "Unlit/furBall"
 
 							float3 iris_center_uvr = float3(animated_iris_uv.xy,_Radius*_Eyeball_Pos_Scale.w);
 							float3 iris_pos = sphericalToCartesian(iris_center_uvr,0.0);
-							float3 hit_pos = pos-float3(sign_x*abs(_Eyeball_Pos_Scale.x),_Eyeball_Pos_Scale.yz);
+							float3 hit_pos = pos-float3(sign_x*abs(_Eyeball_Pos_Scale.x),_Eyeball_Pos_Scale.yz)*_Radius;
 
 							float3 iris_pos_dir = normalize(iris_pos);
 
@@ -442,7 +453,7 @@ Shader "Unlit/furBall"
 				
 							// iris
 							float r = length(radius_delta);
-							r *= _IrisSize;
+							r *= _IrisSize/_Radius;
 							float a = atan2(radius_delta.y,radius_delta.x);
 							float3 iris = _IrisColor;   //虹膜基础颜色
 							iris += iris*3.0*(1.0-smoothstep(0.0,1.0, abs((a+PI)-2.5) ));  //虹膜不同角度带来的光泽变化
@@ -453,7 +464,7 @@ Shader "Unlit/furBall"
 							col *= smoothstep(0.05,0.07,r); //瞳孔
 				
 							// fake highlight 虹膜上的高光
-							col += (0.5-1.0*0.3)*(1.0-smoothstep(0.0,0.02,length(hit_pos.xy-float2(-0.05,0.05))));
+							col += (0.5-1.0*0.3)*(1.0-smoothstep(0.0,0.02*_Radius,length(hit_pos.xy-_HighlightOffset*_Radius)));
 
 							// fake occlusion
 							focc = 0.2+0.8*pow(1.0-smoothstep(-0.4,1.0,uvw.y),2.0);
@@ -501,34 +512,36 @@ Shader "Unlit/furBall"
 						c.a = 1.0;
 					}
 					// else
-			#ifdef OPEN_FUR
+#ifdef OPEN_FUR
 					{
-						float4 fur_col = float4(0.0);
+						float4 fur_col = 0;
 						t = start_t;
-						pos = ro + rd*t;
+						pos = localRayStart + localRayDir*t;
+
+						float rayStep = _FurDepth*(float)_FurDepthScale*_Radius/(float)(_FurLayer);
 
 						// ray-march into volume
-						for(int i=0; i<furLayers; i++) 
+						for(int i=0; i<_FurLayer; i++) 
 						{
-							// if(pos.z<=uvw.z)
-							// {
-							// 	break;
-							// }
 							float4 sampleCol;
-							vec2 uv;
-							float3 transed_pos = localize(pos, trans);
-							// if(length(transed_pos)<=(1.0-furDepth))
-							// {
-							// 	break;
-							// }
+							float2 uv;
+
+							//if(mat_ID>0.0 && t>=hit_t)
+							//{
+							//	break;
+							//}
+
 							if(mat_ID>0.0 && t>=hit_t)
 							{
 								break;
 							}
-							sampleCol.a = furDensity(transed_pos, uv);
+
+							sampleCol.a = furDensity(pos, uv);
+
+							//sampleCol = float4(1,0,0,1);
 							if (sampleCol.a > 0.0) 
 							{
-								sampleCol.rgb = furShade(transed_pos, uv, ro, sampleCol.a);
+								sampleCol.rgb = furShade(pos, uv, localRayStart, sampleCol.a);
 
 								// pre-multiply alpha
 								sampleCol.rgb *= sampleCol.a;
@@ -538,15 +551,18 @@ Shader "Unlit/furBall"
 									break;
 								}
 							}				
-							pos += rd*rayStep;
+							pos += localRayDir*rayStep;
 							t += rayStep;
 						}
 
 						c.xyz = fur_col.rgb*fur_col.a + c.rgb*(1.0-fur_col.a);
+						//c.a = fur_col.a*fur_col.a + c.a*(1.0-fur_col.a);
+						c.a = 1;
 						// c.xyz = fur_col.rgb*(1.0-c.a) + c.rgb*c.a;
-						// c.rgb = fur_col.rgb;
+						//c.rgb = fur_col.rgb;
+						//c = fur_col;
 					}
-			#endif
+#endif
 				}	
 				return c;
 			}

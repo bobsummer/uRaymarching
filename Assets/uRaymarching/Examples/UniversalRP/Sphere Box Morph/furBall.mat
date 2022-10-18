@@ -10,8 +10,7 @@ Material:
   m_Name: furBall
   m_Shader: {fileID: 4800000, guid: 26d55355128f6594f94c634316017f65, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ZWRITE_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -81,8 +80,8 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendDst: 10
-    - _BlendSrc: 5
+    - _BlendDst: 0
+    - _BlendSrc: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -94,7 +93,8 @@ Material:
     - _EnvironmentReflections: 1
     - _EyelidThickness: 0.05
     - _FurDepth: 0.4
-    - _FurLayer: 800
+    - _FurDepthScale: 3
+    - _FurLayer: 512
     - _FurStepMulti: 3
     - _FurThreshold: 0.4
     - _GlossMapScale: 0
@@ -105,7 +105,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Radius: 0.5
+    - _Radius: 0.3812
     - _ReceiveShadows: 1
     - _Shininess: 20
     - _Smoothness: 0.5
@@ -113,23 +113,24 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UVScale: 2
+    - _UVScale: 5
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlockBall_Offset_Scale: {r: 0, g: 0, b: 0, a: 0.8}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DownlidOffset: {r: 0, g: 0, b: 0, a: 1}
-    - _Downlid_Start_Range: {r: 1.8, g: -3.9, b: 0, a: 1}
+    - _Downlid_Start_Range: {r: -1.8, g: 3.9, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Eyeball_Pos_Scale: {r: 0, g: 0, b: 1, a: 0.3}
+    - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.3}
+    - _HighlightOffset: {r: 0.05, g: 0.05, b: 0, a: 1}
     - _IrisColor: {r: 0.089999996, g: 0.0315, b: 0.0135, a: 1}
     - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _UpDownLid_XYRot: {r: 0.6, g: -0.6, b: 0, a: 1}
+    - _UpDownLid_XYRot: {r: -0.6, g: 0.6, b: 0, a: 1}
     - _UplidOffset: {r: 0, g: -0.2, b: -0, a: 1}
-    - _Uplid_Start_Range: {r: -1.8, g: 3.9, b: 0, a: 1}
+    - _Uplid_Start_Range: {r: 1.8, g: -3.9, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1260275427789698038
 MonoBehaviour:

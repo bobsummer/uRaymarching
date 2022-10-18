@@ -74,7 +74,7 @@ MonoBehaviour:
       float ao = 1.0 - pow(1.0 * ray.loop / ray.maxLoop, 2);\n    o.rgb *= ao;\n   
       o.a *= pow(ao, 3);\n}"
     folded: 0
-  constants: {fileID: 11400000, guid: 3fc7bca6894034dec9dc046eade7d602, type: 2}
+  constants: {fileID: 11400000, guid: 9c8b2f5a7a56c4e21bee7ca4ccfc6640, type: 2}
   basicFolded: 1
   conditionsFolded: 1
   variablesFolded: 1
