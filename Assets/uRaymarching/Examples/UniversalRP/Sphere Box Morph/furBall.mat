@@ -80,8 +80,8 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendDst: 0
-    - _BlendSrc: 1
+    - _BlendDst: 10
+    - _BlendSrc: 5
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -113,7 +113,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UVScale: 5
+    - _UVScale: 2
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:

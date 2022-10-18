@@ -183,7 +183,7 @@ Shader "Unlit/furBall"
 		            return 0.0;
 	            }
 
-	            pos = curl(pos,tbn,vel,angular_vel);
+	            //pos = curl(pos,tbn,vel,angular_vel);
 
 	            float3 uvr = cartesianToSpherical(pos,0.0);
 	            uv = uvr.xy;
@@ -191,7 +191,7 @@ Shader "Unlit/furBall"
 				r /= _Radius;
 
 	            float t = (r - (1.0 - _FurDepth)) / _FurDepth;
-	            //uv.y -= t*t*0.2;	// curl down
+	            uv.y -= t*t*0.2;	// curl down
 
 	            float4 tex = tex2Dlod(_MainTex, float4(uv*_UVScale,0,0));
                 // float4 tex = float4(1.0);
@@ -526,11 +526,6 @@ Shader "Unlit/furBall"
 							float4 sampleCol;
 							float2 uv;
 
-							//if(mat_ID>0.0 && t>=hit_t)
-							//{
-							//	break;
-							//}
-
 							if(mat_ID>0.0 && t>=hit_t)
 							{
 								break;
@@ -556,8 +551,8 @@ Shader "Unlit/furBall"
 						}
 
 						c.xyz = fur_col.rgb*fur_col.a + c.rgb*(1.0-fur_col.a);
-						//c.a = fur_col.a*fur_col.a + c.a*(1.0-fur_col.a);
-						c.a = 1;
+						c.a = fur_col.a*fur_col.a + c.a*(1.0-fur_col.a);
+						//c.a = 1;
 						// c.xyz = fur_col.rgb*(1.0-c.a) + c.rgb*c.a;
 						//c.rgb = fur_col.rgb;
 						//c = fur_col;
