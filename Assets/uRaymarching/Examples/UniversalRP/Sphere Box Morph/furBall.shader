@@ -7,9 +7,8 @@ Shader "Unlit/furBall"
         _UVScale ("UVScale", Range(1,5)) = 2
         _Radius ("Radius", Range(0.1,0.5)) = 0.5
         _FurDepth ("FurDepth", Range(0.1,0.8)) = 0.4
-		_FurDepthScale ("_FurDepthScale", Int) = 3
+		_FurDepthScale ("FurDepthScale", Int) = 3
         _FurLayer ("FurLayer", Int) = 800
-        _FurStepMulti("FurStepMulti",Range(2.0,5.0)) = 3.0
         _FurThreshold("FurThreshold",Range(0.1,0.9)) = 0.4
         _Shininess("Shiniess",Float) = 20
 
