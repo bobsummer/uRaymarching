@@ -78,6 +78,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AAScale: 0.0015
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendDst: 10
@@ -92,20 +93,20 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _EyelidThickness: 0.05
-    - _FurDepth: 0.4
+    - _FurDepth: 0.368
     - _FurDepthScale: 3
-    - _FurLayer: 512
+    - _FurLayer: 800
     - _FurStepMulti: 3
     - _FurThreshold: 0.4
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IrisSize: 0.8
+    - _IrisSize: 0.703
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Radius: 0.3812
+    - _Radius: 0.3276
     - _ReceiveShadows: 1
     - _Shininess: 20
     - _Smoothness: 0.5
@@ -123,7 +124,7 @@ Material:
     - _DownlidOffset: {r: 0, g: 0, b: 0, a: 1}
     - _Downlid_Start_Range: {r: -1.8, g: 3.9, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.3}
+    - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.32}
     - _HighlightOffset: {r: 0.05, g: 0.05, b: 0, a: 1}
     - _IrisColor: {r: 0.089999996, g: 0.0315, b: 0.0135, a: 1}
     - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}

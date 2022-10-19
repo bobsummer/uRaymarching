@@ -31,6 +31,8 @@ Shader "Unlit/furBall"
         _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
 		_HighlightOffset("HighlightOffset",Vector) = (-0.05,0.05,0.0)
 
+		_AAScale("AAScale",Float) = 0.01
+
 		[Header(Pass)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
 		[Enum(UnityEngine.Rendering.BlendMode)] _BlendSrc("Blend Src", Float) = 5
@@ -59,6 +61,7 @@ Shader "Unlit/furBall"
             HLSLPROGRAM
 
 			#define OPEN_FUR
+			#define AA 2
 
             #pragma vertex Vert
             #pragma fragment Frag
@@ -118,6 +121,7 @@ Shader "Unlit/furBall"
 			float  _IrisSize;
 			float4 _IrisColor;
 			float2 _HighlightOffset;
+			float  _AAScale;
 
 			float3 animData;			
 
@@ -565,23 +569,38 @@ Shader "Unlit/furBall"
 			float4 Frag(Varyings input) : SV_Target
 			{
 				float turn = 0.0;
+				RaymarchInfo ray;
+				float4 total = 0;
+#if AA>1
+				for(int m=0;m<AA;m++)
+                {
+					for(int n=0;n<AA;n++)
+                    {
+						float2 offset = float2(float(m),float(n)) / float(AA) - 0.5;
+						offset *= _AAScale;
+						
+#else
+				float2 offset = 0;
+#endif
+                InitRaymarchObject(ray,input.positionSS,input.positionWS,input.normalWS,offset);
+				
+				ray.maxLoop = 512;
+                ray.minDistance = 0.01;
 
 				animData.x = animBlink(_Time.y,0.0);
         		animData.y = animBlink(_Time.y-0.02,1.0);
         		// animData.y = 0.0;
         		animData.z = -0.25 + 0.2*(1.0-turn)*smoothstep(-0.3,0.9,sin(_Time.y*1.1)) + 0.05*cos(_Time.y*2.7);
 
-                RaymarchInfo ray;
-
-                InitRaymarchObject(ray,input.positionSS,input.positionWS,input.normalWS);
-
-                ray.maxLoop = 512;
-                ray.minDistance = 0.01;
-
                 // sample the texture
                 float4 col = scene(ray);
-				//col = 1;
-                return col;
+				total += col;
+#if AA>1
+					}
+				}
+				total /= float(AA*AA);
+#endif
+                return total;
             }
             ENDHLSL
         }

@@ -190,15 +190,35 @@ inline float3 GetCameraPosition()
 	return UNITY_MATRIX_I_V._m03_m13_m23; 
 }
 
+inline float3 GetCameraRight()
+{
+	return UNITY_MATRIX_I_V._m00_m10_m20;
+}
+
+inline float3 GetCameraUp()
+{
+	return UNITY_MATRIX_I_V._m01_m11_m21;
+}
+
+inline float3 GetCameraForward()
+{
+	return UNITY_MATRIX_I_V._m02_m12_m22; 
+}
+
 inline float  GetCameraFarClip()     
 { 
 	return _ProjectionParams.z;       
 }
 
-inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float3 normalWS)
+inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float3 normalWS, float2 offset)
 {
     ray = (RaymarchInfo)0;
-    ray.rayDir = normalize(positionWS - GetCameraPosition());
+
+	float3 offseted_positionWS = positionWS;
+	offseted_positionWS += GetCameraRight()*offset.x;
+	offseted_positionWS += GetCameraUp()*offset.y;
+
+    ray.rayDir = normalize(offseted_positionWS - GetCameraPosition());
     ray.projPos = positionSS;
     ray.startPos = GetCameraPosition();
     ray.polyPos = positionWS;
