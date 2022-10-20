@@ -575,13 +575,13 @@ Shader "Unlit/furBall"
                 {
 					for(int n=0;n<AA;n++)
                     {
-						float2 offset = float2(float(m),float(n)) / float(AA) - 0.5;
+						float2 offset = float2(float(m),float(n)) / float(AA-1) - 0.5;
 						offset *= _AAScale;
 						
 #else
 				float2 offset = 0;
 #endif
-                InitRaymarchObject(ray,input.positionSS,input.positionWS,input.normalWS,offset);
+                InitRaymarchObject(ray,input.positionSS,input.positionWS,input.positionCS,input.normalWS,offset);
 				
 				ray.maxLoop = 512;
                 ray.minDistance = 0.01;

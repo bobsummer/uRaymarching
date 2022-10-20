@@ -210,15 +210,44 @@ inline float  GetCameraFarClip()
 	return _ProjectionParams.z;       
 }
 
-inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float3 normalWS, float2 offset)
+inline float4x4 GetHClipToWorldMatrix()
+{
+	return _InvViewProjMatrix;
+}
+
+inline float3 TransformHClipToWorld(float4 positionCS)
+{
+     //float4 retPositionWorld = mul(GetHClipToWorldMatrix(), positionCS);
+	 //return retPositionWorld.xyz/retPositionWorld.w;
+	 float4 retPositionWorld =  mul(unity_MatrixInvV , mul(unity_MatrixInvP,positionCS));
+	 return retPositionWorld.xyz;
+}
+
+inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 positionWS, float4 positionCS, float3 normalWS, float2 offset)
 {
     ray = (RaymarchInfo)0;
 
-	float3 offseted_positionWS = positionWS;
-	offseted_positionWS += GetCameraRight()*offset.x;
-	offseted_positionWS += GetCameraUp()*offset.y;
+	float4 newPostionCS = TransformWorldToHClip(positionWS);
+
+	float4 offseted_positionCS = newPostionCS;
+	//offseted_positionCS += offset.x;
+	//offseted_positionCS += offset.y;
+
+	offseted_positionCS.xyz /= offseted_positionCS.w;
+
+	offseted_positionCS.xy += offset;
+
+	offseted_positionCS.xyz *= offseted_positionCS.w;
+
+	//float3 offseted_positionWS = positionWS;
+	//offseted_positionWS += GetCameraRight()*offset.x;
+	//offseted_positionWS += GetCameraUp()*offset.y;
+
+	float3 offseted_positionWS = TransformHClipToWorld(offseted_positionCS);
+	//offseted_positionWS.z = positionWS.z;
 
     ray.rayDir = normalize(offseted_positionWS - GetCameraPosition());
+
     ray.projPos = positionSS;
     ray.startPos = GetCameraPosition();
     ray.polyPos = positionWS;
