@@ -81,8 +81,8 @@ Material:
     - _AAScale: 1
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendDst: 0
-    - _BlendSrc: 1
+    - _BlendDst: 10
+    - _BlendSrc: 5
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -125,6 +125,7 @@ Material:
     - _Downlid_Start_Range: {r: -1.8, g: 3.9, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.32}
+    - _FurColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightOffset: {r: 0.05, g: 0.05, b: 0, a: 1}
     - _IrisColor: {r: 0.089999996, g: 0.0315, b: 0.0135, a: 1}
     - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}

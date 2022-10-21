@@ -30,7 +30,9 @@ Shader "Unlit/furBall"
         _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
 		_HighlightOffset("HighlightOffset",Vector) = (-0.05,0.05,0.0)
 
-		_AAScale("AAScale",Float) = 0.01
+		_FurColor("FurColor",Color) = (0.8,0.8,0.0,1.0)
+
+		_AAScale("AAScale",Float) = 1
 
 		[Header(Pass)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
@@ -121,6 +123,7 @@ Shader "Unlit/furBall"
 			float4 _IrisColor;
 			float2 _HighlightOffset;
 			float  _AAScale;
+			float4 _FurColor;
 
 			float3 animData;			
 
@@ -236,7 +239,7 @@ Shader "Unlit/furBall"
 	            // base color
 	            // float3 color = textureLod(iChannel1, uv*colorUvScale, 0.0).xyz;
 
-                float3 color = float3(0.8,0.8,0.0);
+                float3 color = _FurColor;
 
 	            // darken with depth
 	            float r = length(pos);
