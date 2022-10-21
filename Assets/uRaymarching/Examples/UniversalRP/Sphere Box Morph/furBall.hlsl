@@ -70,13 +70,6 @@ bool ray_intersect_sphere(float3 ray_start,float3 ray_dir,float3 sphere_center,f
 	}
 }
 
-struct transform
-{
-	float3 position;
-	float3 rotation;
-	float3 scale;
-};
-
 float3 rotate_x(float3 p, float angle)
 {
 	float c = cos(angle);
@@ -96,23 +89,6 @@ float3 rotate_z(float3 p, float angle)
 	float c = cos(angle);
 	float s = sin(angle);
 	return float3(c*p.x + s*p.y, -s*p.x + c*p.y, p.z);
-}
-
-float3 localize(float3 p, transform tr)
-{
-	//Position
-	p -= tr.position;
-
-	//Rotation
-	float3 x = rotate_x(p, radians(tr.rotation.x));
-	float3 xy = rotate_y(x, radians(tr.rotation.y));
-	float3 xyz = rotate_z(xy, radians(tr.rotation.z));
-	p = xyz;
-
-	//Scale
-	p /= tr.scale;
-
-	return p;
 }
 
 bool intersectSphere(float3 ro, float3 rd, float r, out float t)
@@ -232,6 +208,10 @@ inline void InitRaymarchObject(out RaymarchInfo ray, float4 positionSS, float3 p
 	float4 offseted_positionCS = newPostionCS;
 	//offseted_positionCS += offset.x;
 	//offseted_positionCS += offset.y;
+
+	float4 screenParams = GetScaledScreenParams();
+
+	offset.xy /= screenParams.xy;
 
 	offseted_positionCS.xyz /= offseted_positionCS.w;
 
