@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-public class FaceAnimation
+public class FaceAniData
 {
 	public int width;
 	public int height;
@@ -83,12 +83,12 @@ public class FaceAnimation
 		}
 	}
 
-	public static FaceAnimation loadFromFile(string filePath)
+	public static FaceAniData loadFromFile(string filePath)
 	{
-		FaceAnimation ret;
+		FaceAniData ret;
 
 		var text_asset = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
-		ret = JsonUtility.FromJson<FaceAnimation>(text_asset.text);
+		ret = JsonUtility.FromJson<FaceAniData>(text_asset.text);
 		ret.syncData();
 
 		return ret;
@@ -97,8 +97,12 @@ public class FaceAnimation
 	[MenuItem("Tools/loadTest")]
 	public static void loadTest()
 	{
-		FaceAnimation a = loadFromFile("Assets/Emotions/Animations/R-C_frames.json");
-
+		FaceAniData fa = loadFromFile("Assets/Emotions/Animations/R-C_frames.json");
 
 	}
+}
+
+public class FaceAnimation
+{
+
 }
