@@ -52,6 +52,7 @@ public class FaceAniData
 				Vector3 pt;
 				pt.x = face[idx]/fWidth;
 				pt.y = face[idx + 1]/fHeight;
+				pt.y *= -1;
 				pt.z = face[idx + 2]/fDepth;
 				points.Add(pt);
 			}
@@ -76,6 +77,7 @@ public class FaceAniData
 				Vector3 pt;
 				pt.x = nose[idx] / fWidth;
 				pt.y = nose[idx + 1] / fHeight;
+				pt.y *= -1;
 				pt.z = nose[idx + 2] / fDepth;
 				points.Add(pt);
 			}
@@ -104,6 +106,7 @@ public class FaceAniData
 				Vector3 pt;
 				pt.x = eye1[idx]/fWidth;
 				pt.y = eye1[idx + 1]/fHeight;
+				pt.y *= -1;
 				pt.z = eye1[idx + 2]/fDepth;
 				points.Add(pt);
 				avgDepth += pt.z * frameRatio;
@@ -133,6 +136,7 @@ public class FaceAniData
 				Vector3 pt;
 				pt.x = eye2[idx]/fWidth;
 				pt.y = eye2[idx + 1]/fHeight;
+				pt.y *= -1;
 				pt.z = eye2[idx + 2]/fDepth;
 				points.Add(pt);
 				avgDepth += pt.z * frameRatio;
@@ -142,7 +146,8 @@ public class FaceAniData
 		}
 
 		//pupil1_frames_pt
-		tmpframeCount = pupil_1.Count;
+		pointSize = 2;
+		tmpframeCount = pupil_1.Count/pointSize;
 		if (tmpframeCount != frameCount)
 		{
 			Debug.LogErrorFormat("FrameCount {0} != {1}", tmpframeCount, frameCount);
@@ -153,12 +158,13 @@ public class FaceAniData
 			int idx = iFrame * 2;
 			pt.x = pupil_1[idx]/fWidth;
 			pt.y = pupil_1[idx + 1]/fHeight;
+			pt.y *= -1;
 			pt.z = eye1AvgDepth[iFrame] / fDepth;
 			_pupil1_frames_pts.Add(pt);
 		}
 
 		//pupil2_frames_pt
-		tmpframeCount = pupil_2.Count;
+		tmpframeCount = pupil_2.Count/pointSize;
 		if (tmpframeCount != frameCount)
 		{
 			Debug.LogErrorFormat("FrameCount {0} != {1}", tmpframeCount, frameCount);
@@ -169,6 +175,7 @@ public class FaceAniData
 			int idx = iFrame * 2;
 			pt.x = pupil_2[idx] / fWidth;
 			pt.y = pupil_2[idx + 1] / fHeight;
+			pt.y *= -1;
 			pt.z = eye2AvgDepth[iFrame] / fDepth;
 			_pupil2_frames_pts.Add(pt);
 		}
