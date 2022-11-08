@@ -20,7 +20,9 @@ public class FaceAnimation : MonoBehaviour
         public Quaternion _Rotation;
 	}
 
-    public bool        _Loop;
+    public GameObject _BindObj = null;
+
+    private bool        _Loop = true;
     public string      _JsonPath;
     public float       _TimeLength;
     public float       _TimeLine;
@@ -264,6 +266,7 @@ public class FaceAnimation : MonoBehaviour
 			{
                 Transform transChild = transform.GetChild(iChild);
                 List<List<Vector3>> frame_pts = null;
+                List<Vector3> frame_pupil_pts = null;
                 switch (transChild.name)
                 {
                     case "Face":
@@ -291,6 +294,16 @@ public class FaceAnimation : MonoBehaviour
                             faceTrans = transChild;
                             break;
 						}
+                    case "Pupil1":
+						{
+                            frame_pupil_pts = _Data._pupil1_frames_pts;
+                            break;
+						}
+                    case "Pupil2":
+						{
+                            frame_pupil_pts = _Data._pupil2_frames_pts;
+                            break;
+						}
                     default:
                         {
                             break;
@@ -300,10 +313,27 @@ public class FaceAnimation : MonoBehaviour
 				{
                     LineRenderer line_rdr = transChild.GetComponent<LineRenderer>();
                     var prePts = frame_pts[preKeyIdx];
-                    var postPts = frame_pts[Mathf.Min(preKeyIdx + 1, frame_pts.Count - 1)];
+                    int postKeyIdx = preKeyIdx + 1;
+                    if(postKeyIdx >= frame_pts.Count)
+					{
+                        postKeyIdx = 0;
+					}
+                    var postPts = frame_pts[postKeyIdx];
                     var pts = lerp_pts(prePts, postPts, ratio_between_keys);
                     line_rdr.positionCount = pts.Count;
                     line_rdr.SetPositions(pts.ToArray());
+                }
+                else if(frame_pupil_pts!=null)
+				{
+                    var prePt = frame_pupil_pts[preKeyIdx];
+                    int postKeyIdx = preKeyIdx + 1;
+                    if (postKeyIdx >= frame_pupil_pts.Count)
+                    {
+                        postKeyIdx = 0;
+                    }
+                    var postPt = frame_pupil_pts[postKeyIdx];
+                    var pt = Vector3.Lerp(prePt, postPt, ratio_between_keys);
+                    transChild.position = pt;
                 }
 			}
 
@@ -316,6 +346,12 @@ public class FaceAnimation : MonoBehaviour
                 Quaternion lerpQuat = Quaternion.Lerp(preTrans._Rotation, postTrans._Rotation, ratio_between_keys);
                 faceTrans.position = lerpPt;
                 faceTrans.rotation = lerpQuat;
+
+                if(_BindObj!=null)
+				{
+                    _BindObj.transform.position = faceTrans.position;
+                    _BindObj.transform.rotation = faceTrans.rotation;
+				}
 			}
 
             _TimeLine += Time.deltaTime;
