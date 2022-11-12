@@ -236,8 +236,7 @@ public class FaceAnimation : MonoBehaviour
         LoadData();
 	}
 
-	[ExecuteInEditMode]
-    void Update()
+    void _Update()
     {
         if(_State==State.Play)
 		{

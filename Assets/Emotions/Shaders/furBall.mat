@@ -92,6 +92,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Eye1Open: 1
+    - _Eye2Open: 1
     - _EyelidThickness: 0.05
     - _FurDepth: 0.362
     - _FurDepthScale: 5
@@ -122,7 +124,7 @@ Material:
     - _BlockBall_Offset_Scale: {r: 0, g: 0, b: 0, a: 0.8}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DownlidOffset: {r: 0, g: 0, b: 0, a: 1}
-    - _Downlid_Start_Range: {r: -1.8, g: 3.9, b: 0, a: 1}
+    - _Downlid_Start_Range: {r: 0, g: -0.9, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.32}
     - _FurColor: {r: 1, g: 1, b: 1, a: 1}
@@ -130,9 +132,9 @@ Material:
     - _IrisColor: {r: 0.089999996, g: 0.0315, b: 0.0135, a: 1}
     - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _UpDownLid_XYRot: {r: -0.6, g: 0.6, b: 0, a: 1}
+    - _UpDownLid_XYRot: {r: 0, g: 0, b: 0, a: 1}
     - _UplidOffset: {r: 0, g: -0.2, b: -0, a: 1}
-    - _Uplid_Start_Range: {r: 1.8, g: -3.9, b: 0, a: 1}
+    - _Uplid_Start_Range: {r: 0, g: 0.9, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1260275427789698038
 MonoBehaviour:

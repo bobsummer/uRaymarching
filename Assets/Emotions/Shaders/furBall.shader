@@ -25,6 +25,9 @@ Shader "Unlit/furBall"
 
         _UpDownLid_XYRot("UpDownLid_XYRot",Vector) = (0.6,-0.6,0.0)
 
+		_Eye1Open("Eye1Open",Range(0,1)) = 0.5
+		_Eye2Open("Eye2Open",Range(0,1)) = 0.5
+
         _Iris_UV("Iris_UV",Vector) = (0.5,0.5,0.0)
         _IrisColor("IrisColor", Color) = (0.09,0.0315,0.0135)
         _IrisSize("IrisSize", Range(0.1,1.0)) = 0.8
@@ -124,6 +127,8 @@ Shader "Unlit/furBall"
 			float2 _HighlightOffset;
 			float  _AAScale;
 			float4 _FurColor;
+			float  _Eye1Open;
+			float  _Eye2Open;
 
 			float3 animData;			
 
@@ -267,31 +272,45 @@ Shader "Unlit/furBall"
 
 				//return ret;
 	
-				//eyelid
-				float3 oos = qos - _Eyeball_Pos_Scale.xyz*_Radius;
-				float d2 = sdSphere(oos,_Radius*(_Eyeball_Pos_Scale.w + _EyelidThickness));
-	
-				oos += _UplidOffset * _Radius;
+				//eyelid1
+				float3 posEye1 = pos - _Eyeball_Pos_Scale.xyz*_Radius;
+				float dLid1 = sdSphere(posEye1,_Radius*(_Eyeball_Pos_Scale.w + _EyelidThickness));
 
-				// oos.z += 0.2;
-				// oos.y += -0.0;
+				float3 posUpLid = posEye1;
+				posUpLid += _UplidOffset * _Radius;
+				posUpLid.xy = rot(posUpLid.xy, _UpDownLid_XYRot.x);
+				
+				float3 posDownLid = posEye1;
+				posDownLid += _DownlidOffset * _Radius;
+				posDownLid.xy = rot(posDownLid.xy, _UpDownLid_XYRot.y);
 
-				oos.xy = rot(oos.xy, _UpDownLid_XYRot.x);
-				oos.yz = rot(oos.yz,_Uplid_Start_Range.x+_Uplid_Start_Range.y*animData.x);
+				posUpLid.yz = rot(posUpLid.yz,_Uplid_Start_Range.x+_Uplid_Start_Range.y*_Eye1Open);
+				posDownLid.yz = rot(posDownLid.yz,_Downlid_Start_Range.x+_Downlid_Start_Range.y*_Eye1Open);
 
-				float3 eos = qos - _Eyeball_Pos_Scale.xyz*_Radius;
+				dLid1 = smax(dLid1-0.005*_Radius, -max(posUpLid.y+0.098*_Radius,-posDownLid.y-0.025*_Radius), 0.06*_Radius );
 
-				eos += _DownlidOffset * _Radius;
-				eos.xy = rot(eos.xy, _UpDownLid_XYRot.y);
-				eos.yz = rot(eos.yz,_Downlid_Start_Range.x+_Downlid_Start_Range.y*animData.x);
+				//eyelid2
+				float3 posEye2 = pos - float3(-_Eyeball_Pos_Scale.x,_Eyeball_Pos_Scale.yz)*_Radius;
+				float dLid2 = sdSphere(posEye2,_Radius*(_Eyeball_Pos_Scale.w + _EyelidThickness));
 
-				d2 = smax(d2-0.005*_Radius, -max(oos.y+0.098*_Radius,-eos.y-0.025*_Radius), 0.06*_Radius );
-				d2 = smin(d2,d,0.1*_Radius);
-				// d2 = min(d2,d);
+				posUpLid = posEye2;
+				posUpLid += _UplidOffset * _Radius;
+				posUpLid.xy = rot(posUpLid.xy, -_UpDownLid_XYRot.x);
 
-				//d2 = d;
+				posDownLid = posEye2;
+				posDownLid += _DownlidOffset * _Radius;
+				posDownLid.xy = rot(posDownLid.xy, -_UpDownLid_XYRot.y);
 
-				ret.x = d2;
+				posUpLid.yz = rot(posUpLid.yz,_Uplid_Start_Range.x+_Uplid_Start_Range.y*_Eye2Open);
+				posDownLid.yz = rot(posDownLid.yz,_Downlid_Start_Range.x+_Downlid_Start_Range.y*_Eye2Open);
+
+				dLid2 = smax(dLid2-0.005*_Radius, -max(posUpLid.y+0.098*_Radius,-posDownLid.y-0.025*_Radius), 0.06*_Radius );
+
+				float dLid = smin(dLid1,dLid2,0.1*_Radius);
+
+				d = smin(dLid,d,0.1*_Radius);
+
+				ret.x = d;
 				outMat = 1.0;
 				uvw = pos;
 
@@ -299,7 +318,7 @@ Shader "Unlit/furBall"
 
 				//eyeball
 				// pos.x /= 1.05;
-				eos = qos-_Eyeball_Pos_Scale.xyz*_Radius;
+				float3 eos = qos-_Eyeball_Pos_Scale.xyz*_Radius;
 				d = sdSphere(eos,_Eyeball_Pos_Scale.w*_Radius);
 
 				if(d<ret.x)
@@ -593,6 +612,8 @@ Shader "Unlit/furBall"
         		animData.y = animBlink(_Time.y-0.02,1.0);
         		// animData.y = 0.0;
         		animData.z = -0.25 + 0.2*(1.0-turn)*smoothstep(-0.3,0.9,sin(_Time.y*1.1)) + 0.05*cos(_Time.y*2.7);
+
+				animData = 0;
 
                 // sample the texture
                 float4 col = scene(ray);
