@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Reflection;
 
 namespace FFUtils
 {
@@ -53,6 +55,23 @@ namespace FFUtils
 		{
 			_Name = name;
 			_ID = Shader.PropertyToID(_Name);
+		}
+		
+		public static void fillFields(object obj)
+		{
+			FieldInfo[] fieldInfos;
+
+			Type t = obj.GetType();
+			// Get the type and fields of FieldInfoClass.
+			fieldInfos = t.GetFields(BindingFlags.Instance | BindingFlags.Public);
+
+			// Display the field information of FieldInfoClass.
+			for (int i = 0; i < fieldInfos.Length; i++)
+			{
+				var fieldInfo = fieldInfos[i];
+				var fieldName = fieldInfo.Name;
+				fieldInfo.SetValue(obj, new Mat_NameID(fieldName));
+			}
 		}
 	}
 

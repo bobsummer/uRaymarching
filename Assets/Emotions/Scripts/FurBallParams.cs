@@ -1,35 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using FFUtils;
+using System.Reflection;
+using System;
 
 namespace FurBall
 {
     //[System.Serializable]
-    public class BaseParams : ScriptableObject
-	{
-        public float _Radius = 1;
-        public Vector3 _EyeUVR;
-        public float   _EyeScale;
 
-        [Range(-30.0f, 30.0f)]
-        public float _ULid_XY_Rot_Deg = 0;
-        [Range(-30.0f, 30.0f)]
-        public float _DLid_XY_Rot_Deg = 0;
 
-        [Range(-10.0f, 10.0f)]
-        public float _ULid_YZ_Rot_Start_Deg = 0;
-        [Range(-10.0f, 10.0f)]
-        public float _DLid_YZ_Rot_Start_Deg = 0;
-
-        [Range(-10.0f, 90.0f)]
-        public float _ULid_YZ_Rot_Range_Deg = 80;
-        [Range(-90.0f, 10.0f)]
-        public float _DLid_YZ_Rot_Range_Deg = -80;
-
-        public Color _FurColor = Color.white;
-    }
-
-    public class AniParams
+    public class AnimationParams
 	{
         public Vector3 _Pos = Vector3.zero;
         public Quaternion _Rot = Quaternion.identity;
@@ -40,9 +22,34 @@ namespace FurBall
 
 	}
 
+    public class MatNameIDs
+	{
+        public MatNameIDs()
+		{
+            Mat_NameID.fillFields(this);
+        }
+
+        public Mat_NameID _Radius;
+        public Mat_NameID _Eyeball_Pos_Scale;
+        public Mat_NameID _UpDownLid_XYRot;
+        public Mat_NameID _Uplid_Start_Range;
+        public Mat_NameID _Downlid_Start_Range;
+        public Mat_NameID _FurColor;
+
+        public Mat_NameID _Eye1Open;
+        public Mat_NameID _Eye2Open;
+    }
+
     public class FurBallParams : MonoBehaviour
     {
-        public BaseParams _baseParams;
+        public string _Path;
+        public string _BaseParamsName;
+        public BaseParams _BaseParams;
+
+        public FaceAnimation _BindFaceAnimation;
+        
+        private AnimationParams _AniParams;
+        private MatNameIDs _MatNameIDs;
 
 
         Transform _trans;
@@ -72,17 +79,86 @@ namespace FurBall
 			}
 		}
 
+        [ContextMenu("NewBaseParams")]
+        void newBaseParams()
+		{
+            _BaseParams = ScriptableObject.CreateInstance<BaseParams>();
+		}
+
         [ContextMenu("SaveBaseParams")]
         void saveBaseParams()
+		{
+            if(_BaseParams==null)
+			{
+                return;
+			}
+            if(AssetDatabase.Contains(_BaseParams))
+			{
+                AssetDatabase.SaveAssets();
+			}
+            else
+			{
+                saveBaseParamsAs();
+			}
+		}
+
+        [ContextMenu("SaveBaseParamsAs")]
+        void saveBaseParamsAs()
+		{
+            if(AssetDatabase.Contains(_BaseParams))
+			{
+                _BaseParams = Instantiate(_BaseParams);
+			}
+            string fullPath = _Path + "/"  + _BaseParamsName + ".asset";
+            int idx = 1;
+            while(true)
+			{
+                var guid = AssetDatabase.AssetPathToGUID(fullPath, AssetPathToGUIDOptions.OnlyExistingAssets);
+                if (guid == null || guid.Length <= 0)
+                {
+                    break;
+                }
+                fullPath = _Path + "/" + _BaseParamsName + "_" + idx.ToString() + ".asset";
+                idx++;
+            }
+            AssetDatabase.CreateAsset(_BaseParams, fullPath);
+        }
+
+        void syncBaseParams()
+		{
+            mat.SetFloat(_MatNameIDs._Radius.ID, _BaseParams._Radius);
+
+            Vector4 eye_Pos_Scale = Maths.sphericalToCartesian(_BaseParams._EyeUVR, Vector3.zero);
+            eye_Pos_Scale.w = _BaseParams._EyeScale;
+
+            mat.SetVector(_MatNameIDs._Eyeball_Pos_Scale.ID, eye_Pos_Scale);
+
+		}
+
+        static void face_to_furball_animation(FaceAnimation faceAni,ref AnimationParams aniParams)
+		{
+		}
+
+        void syncAniParams()
 		{
 
 		}
 
-
-
 		private void Update()
 		{
-			
+            syncBaseParams();
+
+            if (_BindFaceAnimation)
+			{
+                _BindFaceAnimation._Update();
+                face_to_furball_animation(_BindFaceAnimation, ref _AniParams);
+                syncAniParams();
+            }
+		}
+
+		private void Start()
+		{
+            _MatNameIDs = new MatNameIDs();
 		}
 
 	}
