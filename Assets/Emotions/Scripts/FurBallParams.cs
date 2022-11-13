@@ -9,17 +9,13 @@ using System;
 namespace FurBall
 {
     //[System.Serializable]
-
-
     public class AnimationParams
 	{
         public Vector3 _Pos = Vector3.zero;
         public Quaternion _Rot = Quaternion.identity;
 
-
         public float _Eye1Open = 1;
         public float _Eye2Open = 1;
-
 	}
 
     public class MatNameIDs
@@ -31,6 +27,7 @@ namespace FurBall
 
         public Mat_NameID _Radius;
         public Mat_NameID _Eyeball_Pos_Scale;
+        public Mat_NameID _EyelidThickness;
         public Mat_NameID _UpDownLid_XYRot;
         public Mat_NameID _Uplid_Start_Range;
         public Mat_NameID _Downlid_Start_Range;
@@ -73,7 +70,7 @@ namespace FurBall
                 if(_mat==null)
 				{
                     var mr = GetComponent<MeshRenderer>();
-                    _mat = mr.sharedMaterial;
+                    _mat = mr.material;
 				}
                 return _mat;
 			}
@@ -128,15 +125,44 @@ namespace FurBall
 		{
             mat.SetFloat(_MatNameIDs._Radius.ID, _BaseParams._Radius);
 
-            Vector4 eye_Pos_Scale = Maths.sphericalToCartesian(_BaseParams._EyeUVR, Vector3.zero);
-            eye_Pos_Scale.w = _BaseParams._EyeScale;
+			{
+                Vector4 eye_Pos_Scale = Maths.sphericalToCartesian(_BaseParams._EyeUVR, Vector3.zero);
+                eye_Pos_Scale.w = _BaseParams._EyeScale;
+                mat.SetVector(_MatNameIDs._Eyeball_Pos_Scale.ID, eye_Pos_Scale);
+                mat.SetFloat(_MatNameIDs._EyelidThickness.ID, _BaseParams._LidThickness);
+            }
 
-            mat.SetVector(_MatNameIDs._Eyeball_Pos_Scale.ID, eye_Pos_Scale);
+			{
+                Vector4 lidXYRotRads = Vector4.zero;
+                lidXYRotRads.x = _BaseParams._ULid_XY_Rot_Deg * Mathf.Deg2Rad;
+                lidXYRotRads.y = _BaseParams._DLid_XY_Rot_Deg * Mathf.Deg2Rad;
+                mat.SetVector(_MatNameIDs._UpDownLid_XYRot.ID, lidXYRotRads);
+            }
 
+			{
+                Vector4 u_lid_start_range = Vector4.zero;
+                Vector4 d_lid_start_range = Vector4.zero;
+                u_lid_start_range.x = _BaseParams._ULid_YZ_Rot_Start_Deg * Mathf.Deg2Rad;
+                u_lid_start_range.y = _BaseParams._ULid_YZ_Rot_Range_Deg * Mathf.Deg2Rad;
+                d_lid_start_range.x = _BaseParams._DLid_YZ_Rot_Start_Deg * Mathf.Deg2Rad;
+                d_lid_start_range.y = _BaseParams._DLid_YZ_Rot_Range_Deg * Mathf.Deg2Rad;
+                mat.SetVector(_MatNameIDs._Uplid_Start_Range.ID, u_lid_start_range);
+                mat.SetVector(_MatNameIDs._Downlid_Start_Range.ID, d_lid_start_range);
+            }
+
+            mat.SetColor(_MatNameIDs._FurColor.ID, _BaseParams._FurColor);
 		}
 
         static void face_to_furball_animation(FaceAnimation faceAni,ref AnimationParams aniParams)
 		{
+            aniParams._Pos = faceAni.curFaceTrans._Position;
+            aniParams._Rot = faceAni.curFaceTrans._Rotation;
+
+            var eye1Pts = faceAni.curEye1Pts;
+
+
+
+
 		}
 
         void syncAniParams()

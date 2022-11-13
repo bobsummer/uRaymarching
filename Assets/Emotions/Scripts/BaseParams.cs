@@ -9,6 +9,9 @@ namespace FurBall
         public Vector3 _EyeUVR;
         public float _EyeScale;
 
+        [Range(0.01f,0.1f)]
+        public float _LidThickness = 0.05f;
+
         [Range(-30.0f, 30.0f)]
         public float _ULid_XY_Rot_Deg = 0;
         [Range(-30.0f, 30.0f)]

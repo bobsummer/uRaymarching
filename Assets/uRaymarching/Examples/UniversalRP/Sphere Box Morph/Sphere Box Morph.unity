@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &17069873
 Transform:
   m_ObjectHideFlags: 0
@@ -1462,7 +1462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1313802206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1556,8 +1556,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Path: Assets/Emotions/FurBallParams
   _BaseParamsName: baseParams
-  _BaseParams: {fileID: 0}
-  _BindFaceAnimation: {fileID: 0}
+  _BaseParams: {fileID: 11400000, guid: 630dc3c632110a546a04c87d51d8716e, type: 2}
+  _BindFaceAnimation: {fileID: 17069874}
 --- !u!1 &1327010782
 GameObject:
   m_ObjectHideFlags: 0

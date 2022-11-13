@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Linq;
 
 public class FaceAniData
 {
@@ -32,6 +33,15 @@ public class FaceAniData
 	public List<Vector3> _pupil1_frames_pts = new List<Vector3>();
 	[NonSerialized]
 	public List<Vector3> _pupil2_frames_pts = new List<Vector3>();
+
+	[NonSerialized]
+	public List<float> _eye1_frame_heights = new List<float>();
+	[NonSerialized]
+	public float _eye1_max_height = 0.0f;
+	[NonSerialized]
+	public List<float> _eye2_frame_heights = new List<float>();
+	[NonSerialized]
+	public float _eye2_max_height = 0.0f;
 
 	protected void syncData()
 	{
@@ -130,8 +140,15 @@ public class FaceAniData
 				avgDepth += pt.z * pointRatio;
 			}
 			_eye1_frames_pts.Add(points);
+
+			Vector3 uPoint = (points[1] + points[2]) * 0.5f;
+			Vector3 dPoint = (points[4] + points[5]) * 0.5f;
+			_eye1_frame_heights.Add((uPoint - dPoint).magnitude);
+
 			eye1AvgDepth.Add(avgDepth);
 		}
+
+		_eye1_max_height = _eye1_frame_heights.AsQueryable().Max();
 		_eye1_frames_pts.Add(_eye1_frames_pts[0]);
 
 		//eye2_frames_pts
@@ -170,8 +187,15 @@ public class FaceAniData
 				avgDepth += pt.z * pointRatio;
 			}
 			_eye2_frames_pts.Add(points);
+
+			Vector3 uPoint = (points[1] + points[2]) * 0.5f;
+			Vector3 dPoint = (points[4] + points[5]) * 0.5f;
+			_eye2_frame_heights.Add((uPoint - dPoint).magnitude);
+
 			eye2AvgDepth.Add(avgDepth);
 		}
+
+		_eye2_max_height = _eye2_frame_heights.AsQueryable().Max();
 		_eye2_frames_pts.Add(_eye2_frames_pts[0]);
 
 		//pupil1_frames_pt

@@ -22,7 +22,37 @@ public class FaceAnimation : MonoBehaviour
 
     public GameObject _BindObj = null;
 
-    private bool        _Loop = true;
+    public Trans curFaceTrans
+	{
+        get;
+        private set;
+	}
+
+    public List<Vector3> curEye1Pts
+	{
+        get;
+        private set;
+	}
+
+    public List<Vector3> curEye2Pts
+	{
+        get;
+        private set;
+	}
+
+    public float curEye1Height
+	{
+        get;
+        private set;
+	}
+
+    public float curEye2Height
+	{
+        get;
+        private set;
+	}
+
+    private bool       _Loop = true;
     public string      _JsonPath;
     public float       _TimeLength;
     public float       _TimeLine;
@@ -33,6 +63,14 @@ public class FaceAnimation : MonoBehaviour
     public List<Vector2> _PupilUV;
 
     private FaceAniData _Data;
+
+    public FaceAniData Data
+	{
+        get
+		{
+            return _Data;
+		}
+	}
 
     [ContextMenu("LoadData")]
     void LoadData()
@@ -336,22 +374,66 @@ public class FaceAnimation : MonoBehaviour
                 }
 			}
 
-            if(faceTrans!=null)
 			{
+                //Face Transform
                 Trans preTrans = _FaceTrans[preKeyIdx];
                 Trans postTrans = _FaceTrans[Mathf.Min(preKeyIdx + 1, _FaceTrans.Count - 1)];
 
                 Vector3 lerpPt = Vector3.Lerp(preTrans._Position, postTrans._Position, ratio_between_keys);
                 Quaternion lerpQuat = Quaternion.Lerp(preTrans._Rotation, postTrans._Rotation, ratio_between_keys);
-                faceTrans.position = lerpPt;
-                faceTrans.rotation = lerpQuat;
 
-                if(_BindObj!=null)
+                curFaceTrans._Position = lerpPt;
+                curFaceTrans._Rotation = lerpQuat;
+
+                if(faceTrans!=null)
 				{
-                    _BindObj.transform.position = faceTrans.position;
-                    _BindObj.transform.rotation = faceTrans.rotation;
-				}
+                    faceTrans.position = lerpPt;
+                    faceTrans.rotation = lerpQuat;
+                    if (_BindObj != null)
+                    {
+                        _BindObj.transform.position = faceTrans.position;
+                        _BindObj.transform.rotation = faceTrans.rotation;
+                    }
+                }
 			}
+
+			{
+                //Eye1 Points
+                var frame_pts = _Data._eye1_frames_pts;
+
+                var prePts = frame_pts[preKeyIdx];
+                int postKeyIdx = preKeyIdx + 1;
+                if (postKeyIdx >= frame_pts.Count)
+                {
+                    postKeyIdx = 0;
+                }
+                var postPts = frame_pts[postKeyIdx];
+                curEye1Pts = lerp_pts(prePts, postPts, ratio_between_keys);
+
+                var heights = _Data._eye1_frame_heights;
+                float preHeight = heights[preKeyIdx];
+                float postHeight = heights[postKeyIdx];
+                curEye1Height = Mathf.Lerp(preHeight, postHeight, ratio_between_keys);
+            }
+
+			{
+                //Eye2 Points
+                var frame_pts = _Data._eye2_frames_pts;
+
+                var prePts = frame_pts[preKeyIdx];
+                int postKeyIdx = preKeyIdx + 1;
+                if (postKeyIdx >= frame_pts.Count)
+                {
+                    postKeyIdx = 0;
+                }
+                var postPts = frame_pts[postKeyIdx];
+                curEye2Pts = lerp_pts(prePts, postPts, ratio_between_keys);
+
+                var heights = _Data._eye2_frame_heights;
+                float preHeight = heights[preKeyIdx];
+                float postHeight = heights[postKeyIdx];
+                curEye2Height = Mathf.Lerp(preHeight, postHeight, ratio_between_keys);
+            }
 
             _TimeLine += Time.deltaTime;
 		}
