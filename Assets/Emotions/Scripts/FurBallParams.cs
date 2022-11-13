@@ -158,7 +158,7 @@ namespace FurBall
             aniParams._Pos = faceAni.curFaceTrans._Position;
             aniParams._Rot = faceAni.curFaceTrans._Rotation;
 
-            var eye1Pts = faceAni.curEye1Pts;
+            var eye1Pts = faceAni.curEye1Height / faceAni.Data._eye1_max_height;
 
 
 
