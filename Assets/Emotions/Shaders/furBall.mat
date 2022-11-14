@@ -123,7 +123,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BlockBall_Offset_Scale: {r: 0, g: 0, b: 0, a: 0.8}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DownlidOffset: {r: 0, g: 0, b: 0, a: 1}
+    - _DownlidOffset: {r: 0, g: -0.03, b: 0, a: 1}
     - _Downlid_Start_Range: {r: 0, g: -0.9, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Eyeball_Pos_Scale: {r: 0.22, g: 0, b: 0.35, a: 0.32}
@@ -133,7 +133,7 @@ Material:
     - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _UpDownLid_XYRot: {r: 0, g: 0, b: 0, a: 1}
-    - _UplidOffset: {r: 0, g: -0.2, b: -0, a: 1}
+    - _UplidOffset: {r: 0, g: 0.03, b: -0, a: 1}
     - _Uplid_Start_Range: {r: 0, g: 0.9, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1260275427789698038

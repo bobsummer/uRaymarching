@@ -44,8 +44,8 @@ namespace FurBall
         public BaseParams _BaseParams;
 
         public FaceAnimation _BindFaceAnimation;
-        
-        private AnimationParams _AniParams;
+
+        private AnimationParams _AniParams = new AnimationParams();
         private MatNameIDs _MatNameIDs;
 
 
@@ -153,22 +153,28 @@ namespace FurBall
             mat.SetColor(_MatNameIDs._FurColor.ID, _BaseParams._FurColor);
 		}
 
-        static void face_to_furball_animation(FaceAnimation faceAni,ref AnimationParams aniParams)
+        static bool face_to_furball_animation(FaceAnimation faceAni,ref AnimationParams aniParams)
 		{
-            aniParams._Pos = faceAni.curFaceTrans._Position;
-            aniParams._Rot = faceAni.curFaceTrans._Rotation;
+            bool ret = false;
+			{
+                aniParams._Pos = faceAni.curFaceTrans._Position;
+                aniParams._Rot = faceAni.curFaceTrans._Rotation;
 
-            var eye1Pts = faceAni.curEye1Height / faceAni.Data._eye1_max_height;
-
-
-
-
-		}
+                aniParams._Eye1Open = faceAni.curEye1Height / faceAni.Data._eye1_max_height;
+                aniParams._Eye2Open = faceAni.curEye2Height / faceAni.Data._eye2_max_height;
+                ret = true;
+            }
+            return ret;
+        }
 
         void syncAniParams()
 		{
+            trans.position = _AniParams._Pos;
+            trans.rotation = _AniParams._Rot;
 
-		}
+            mat.SetFloat(_MatNameIDs._Eye1Open.ID, _AniParams._Eye1Open);
+            mat.SetFloat(_MatNameIDs._Eye2Open.ID, _AniParams._Eye2Open);
+        }
 
 		private void Update()
 		{
@@ -177,8 +183,10 @@ namespace FurBall
             if (_BindFaceAnimation)
 			{
                 _BindFaceAnimation._Update();
-                face_to_furball_animation(_BindFaceAnimation, ref _AniParams);
-                syncAniParams();
+                if(face_to_furball_animation(_BindFaceAnimation, ref _AniParams))
+				{
+                    syncAniParams();
+                }                
             }
 		}
 

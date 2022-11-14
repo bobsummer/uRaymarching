@@ -150,6 +150,7 @@ public class FaceAniData
 
 		_eye1_max_height = _eye1_frame_heights.AsQueryable().Max();
 		_eye1_frames_pts.Add(_eye1_frames_pts[0]);
+		_eye1_frame_heights.Add(_eye1_frame_heights[0]);
 
 		//eye2_frames_pts
 		pointSize = eye2Shape[1];
@@ -197,6 +198,7 @@ public class FaceAniData
 
 		_eye2_max_height = _eye2_frame_heights.AsQueryable().Max();
 		_eye2_frames_pts.Add(_eye2_frames_pts[0]);
+		_eye2_frame_heights.Add(_eye2_frame_heights[0]);
 
 		//pupil1_frames_pt
 		pointSize = 2;

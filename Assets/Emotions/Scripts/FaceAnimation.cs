@@ -14,7 +14,7 @@ public class FaceAnimation : MonoBehaviour
     protected State _State = State.Stop;
 
     [Serializable]
-    public class Trans
+    public struct Trans
 	{
         public Vector3    _Position;
         public Quaternion _Rotation;
@@ -22,11 +22,8 @@ public class FaceAnimation : MonoBehaviour
 
     public GameObject _BindObj = null;
 
-    public Trans curFaceTrans
-	{
-        get;
-        private set;
-	}
+    [NonSerialized]
+    public Trans curFaceTrans;
 
     public List<Vector3> curEye1Pts
 	{

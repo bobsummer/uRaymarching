@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2a0b8b2b1559984bb126dfb986fffbf, type: 3}
-  m_Name: baseParams
+  m_Name: Normal
   m_EditorClassIdentifier: 
-  _Radius: 1
-  _EyeUVR: {x: 0, y: 0, z: 0}
-  _EyeScale: 0
+  _Radius: 0.47
+  _EyeUVR: {x: 0.3, y: 0.5, z: 0.43}
+  _EyeScale: 0.34
+  _LidThickness: 0.0156
   _ULid_XY_Rot_Deg: 0
   _DLid_XY_Rot_Deg: 0
   _ULid_YZ_Rot_Start_Deg: 0
   _DLid_YZ_Rot_Start_Deg: 0
-  _ULid_YZ_Rot_Range_Deg: 80
-  _DLid_YZ_Rot_Range_Deg: -80
+  _ULid_YZ_Rot_Range_Deg: 87.8
+  _DLid_YZ_Rot_Range_Deg: -59.3
   _FurColor: {r: 1, g: 1, b: 1, a: 1}
