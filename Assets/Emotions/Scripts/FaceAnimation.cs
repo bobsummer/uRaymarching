@@ -59,12 +59,16 @@ public class FaceAnimation : MonoBehaviour
     public List<Trans>   _FaceTrans;
     public List<Vector2> _PupilUV;
 
-    private FaceAniData _Data;
+    private FaceAniData _Data = null;
 
     public FaceAniData Data
 	{
         get
 		{
+            if(_Data==null)
+			{
+                LoadData();
+			}
             return _Data;
 		}
 	}
@@ -378,7 +382,7 @@ public class FaceAnimation : MonoBehaviour
 
                 Vector3 lerpPt = Vector3.Lerp(preTrans._Position, postTrans._Position, ratio_between_keys);
                 Quaternion lerpQuat = Quaternion.Lerp(preTrans._Rotation, postTrans._Rotation, ratio_between_keys);
-
+                 
                 curFaceTrans._Position = lerpPt;
                 curFaceTrans._Rotation = lerpQuat;
 

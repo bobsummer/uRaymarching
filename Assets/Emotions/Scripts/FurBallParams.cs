@@ -8,7 +8,7 @@ using System;
 
 namespace FurBall
 {
-    //[System.Serializable]
+    [System.Serializable]
     public class AnimationParams
 	{
         public Vector3 _Pos = Vector3.zero;
@@ -45,9 +45,21 @@ namespace FurBall
 
         public FaceAnimation _BindFaceAnimation;
 
-        private AnimationParams _AniParams = new AnimationParams();
+        public AnimationParams _AniParams = new AnimationParams();
+
         private MatNameIDs _MatNameIDs;
 
+        MatNameIDs matNameIDs
+		{
+            get
+			{
+                if(_MatNameIDs==null)
+				{
+                    _MatNameIDs = new MatNameIDs();
+				}
+                return _MatNameIDs;
+			}
+		}
 
         Transform _trans;
         Transform trans
@@ -70,7 +82,14 @@ namespace FurBall
                 if(_mat==null)
 				{
                     var mr = GetComponent<MeshRenderer>();
-                    _mat = mr.material;
+                    if(Application.isPlaying)
+					{
+                        _mat = mr.material;
+                    }
+                    else
+					{
+                        _mat = mr.sharedMaterial;
+					}                    
 				}
                 return _mat;
 			}
@@ -121,22 +140,81 @@ namespace FurBall
             AssetDatabase.CreateAsset(_BaseParams, fullPath);
         }
 
-        void syncBaseParams()
+        [ContextMenu("OpenEditorUpdate")]
+        void openEditorUpdate()
 		{
-            mat.SetFloat(_MatNameIDs._Radius.ID, _BaseParams._Radius);
+            EditorApplication.update += Update;
+		}
+
+        [ContextMenu("CloseEditorUpdate")]
+        void closeEditorUpdate()
+		{
+            EditorApplication.update -= Update;
+		}
+
+        [ContextMenu("ExportAnimClip")]
+        void ExportAnimClip()
+        {
+            if(_BindFaceAnimation != null)
+			{
+                AnimationClip animClip = new AnimationClip();
+                animClip.legacy = true;
+
+                int keyCount = _BindFaceAnimation._FaceTrans.Count;
+
+                Dictionary<string, Keyframe[]> name_keyframes = new Dictionary<string, Keyframe[]>();
+
+                name_keyframes["localPosition.x"] = new Keyframe[keyCount];
+                name_keyframes["localPosition.y"] = new Keyframe[keyCount];
+                name_keyframes["localPosition.z"] = new Keyframe[keyCount];
+
+                name_keyframes["rotation.x"] = new Keyframe[keyCount];
+                name_keyframes["rotation.y"] = new Keyframe[keyCount];
+                name_keyframes["rotation.z"] = new Keyframe[keyCount];
+                name_keyframes["rotation.w"] = new Keyframe[keyCount];    
+
+                for (int iKey = 0; iKey < keyCount; iKey++)
+				{
+                    FaceAnimation.Trans trans = _BindFaceAnimation._FaceTrans[iKey];
+                    float key = _BindFaceAnimation._Keys[iKey];
+                    
+                    name_keyframes["localPosition.x"][iKey] = new Keyframe(key, trans._Position.x);
+                    name_keyframes["localPosition.y"][iKey] = new Keyframe(key, trans._Position.y);
+                    name_keyframes["localPosition.z"][iKey] = new Keyframe(key, trans._Position.z);
+
+                    name_keyframes["rotation.x"][iKey] = new Keyframe(key, trans._Rotation.x);
+                    name_keyframes["rotation.y"][iKey] = new Keyframe(key, trans._Rotation.y);
+                    name_keyframes["rotation.z"][iKey] = new Keyframe(key, trans._Rotation.z);
+                    name_keyframes["rotation.w"][iKey] = new Keyframe(key, trans._Rotation.w);
+                }
+
+                foreach(var k_v in name_keyframes)
+				{
+                    var curve = new AnimationCurve(k_v.Value);
+                    animClip.SetCurve("", typeof(Transform), k_v.Key, curve);                  
+				}
+
+                AssetDatabase.CreateAsset(animClip, "Assets/anim.asset");
+            } 
+
+        }
+
+        void syncBaseParams()
+		{            
+            mat.SetFloat(matNameIDs._Radius.ID, _BaseParams._Radius);
 
 			{
                 Vector4 eye_Pos_Scale = Maths.sphericalToCartesian(_BaseParams._EyeUVR, Vector3.zero);
                 eye_Pos_Scale.w = _BaseParams._EyeScale;
-                mat.SetVector(_MatNameIDs._Eyeball_Pos_Scale.ID, eye_Pos_Scale);
-                mat.SetFloat(_MatNameIDs._EyelidThickness.ID, _BaseParams._LidThickness);
+                mat.SetVector(matNameIDs._Eyeball_Pos_Scale.ID, eye_Pos_Scale);
+                mat.SetFloat(matNameIDs._EyelidThickness.ID, _BaseParams._LidThickness);
             }
 
 			{
                 Vector4 lidXYRotRads = Vector4.zero;
                 lidXYRotRads.x = _BaseParams._ULid_XY_Rot_Deg * Mathf.Deg2Rad;
                 lidXYRotRads.y = _BaseParams._DLid_XY_Rot_Deg * Mathf.Deg2Rad;
-                mat.SetVector(_MatNameIDs._UpDownLid_XYRot.ID, lidXYRotRads);
+                mat.SetVector(matNameIDs._UpDownLid_XYRot.ID, lidXYRotRads);
             }
 
 			{
@@ -146,11 +224,11 @@ namespace FurBall
                 u_lid_start_range.y = _BaseParams._ULid_YZ_Rot_Range_Deg * Mathf.Deg2Rad;
                 d_lid_start_range.x = _BaseParams._DLid_YZ_Rot_Start_Deg * Mathf.Deg2Rad;
                 d_lid_start_range.y = _BaseParams._DLid_YZ_Rot_Range_Deg * Mathf.Deg2Rad;
-                mat.SetVector(_MatNameIDs._Uplid_Start_Range.ID, u_lid_start_range);
-                mat.SetVector(_MatNameIDs._Downlid_Start_Range.ID, d_lid_start_range);
+                mat.SetVector(matNameIDs._Uplid_Start_Range.ID, u_lid_start_range);
+                mat.SetVector(matNameIDs._Downlid_Start_Range.ID, d_lid_start_range);
             }
 
-            mat.SetColor(_MatNameIDs._FurColor.ID, _BaseParams._FurColor);
+            mat.SetColor(matNameIDs._FurColor.ID, _BaseParams._FurColor);
 		}
 
         static bool face_to_furball_animation(FaceAnimation faceAni,ref AnimationParams aniParams)
@@ -172,14 +250,14 @@ namespace FurBall
             trans.position = _AniParams._Pos;
             trans.rotation = _AniParams._Rot;
 
-            mat.SetFloat(_MatNameIDs._Eye1Open.ID, _AniParams._Eye1Open);
-            mat.SetFloat(_MatNameIDs._Eye2Open.ID, _AniParams._Eye2Open);
+            mat.SetFloat(matNameIDs._Eye1Open.ID, _AniParams._Eye1Open);
+            mat.SetFloat(matNameIDs._Eye2Open.ID, _AniParams._Eye2Open);
         }
 
+        [ExecuteInEditMode]
 		private void Update()
 		{
             syncBaseParams();
-
             if (_BindFaceAnimation)
 			{
                 _BindFaceAnimation._Update();
@@ -189,11 +267,5 @@ namespace FurBall
                 }                
             }
 		}
-
-		private void Start()
-		{
-            _MatNameIDs = new MatNameIDs();
-		}
-
 	}
 }

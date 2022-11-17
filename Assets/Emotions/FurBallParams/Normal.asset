@@ -15,7 +15,7 @@ MonoBehaviour:
   _Radius: 0.47
   _EyeUVR: {x: 0.3, y: 0.5, z: 0.43}
   _EyeScale: 0.34
-  _LidThickness: 0.0156
+  _LidThickness: 0.0162
   _ULid_XY_Rot_Deg: 0
   _DLid_XY_Rot_Deg: 0
   _ULid_YZ_Rot_Start_Deg: 0

@@ -1556,7 +1556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Path: Assets/Emotions/FurBallParams
   _BaseParamsName: baseParams
-  _BaseParams: {fileID: 11400000, guid: 630dc3c632110a546a04c87d51d8716e, type: 2}
+  _BaseParams: {fileID: 11400000, guid: 297071c29456aa44e9b0fac9bc703e45, type: 2}
   _BindFaceAnimation: {fileID: 17069874}
 --- !u!1 &1327010782
 GameObject:
