@@ -181,45 +181,48 @@ MonoBehaviour:
   _TimeLine: 0
   _Keys:
   - 0
-  - 0.083333336
-  - 0.16666667
-  - 0.25
-  - 0.33333334
-  - 0.4166667
-  - 0.5
-  - 0.5833333
-  - 0.6666666
-  - 0.74999994
-  - 0.83333325
-  - 0.91666657
-  - 0.9999999
+  - 0.07692308
+  - 0.15384616
+  - 0.23076925
+  - 0.30769232
+  - 0.3846154
+  - 0.46153846
+  - 0.53846157
+  - 0.61538464
+  - 0.6923077
+  - 0.7692308
+  - 0.84615386
+  - 0.9230769
+  - 1
   _FaceTrans:
-  - _Position: {x: 0.5380562, y: 0.50468385, z: -0.023050256}
-    _Rotation: {x: -0.042408023, y: 0.013880994, z: 0.9988695, w: 0.016390897}
-  - _Position: {x: 0.545082, y: 0.5058548, z: -0.015472613}
-    _Rotation: {x: -0.04828564, y: 0.006082645, z: 0.99878734, w: 0.0074436446}
-  - _Position: {x: 0.55796254, y: 0.513466, z: -0.022659078}
-    _Rotation: {x: -0.04861628, y: 0.013524812, z: 0.99858916, w: 0.01653047}
-  - _Position: {x: 0.5737705, y: 0.49355972, z: -0.01374191}
-    _Rotation: {x: -0.04438003, y: -0.03605163, z: 0.99825543, w: 0.014722926}
-  - _Position: {x: 0.5790398, y: 0.40925056, z: -0.008738793}
-    _Rotation: {x: -0.0003587833, y: -0.13518761, z: 0.99082, w: -0.000096115604}
-  - _Position: {x: 0.5550351, y: 0.4519906, z: -0.0035585389}
-    _Rotation: {x: -0.028549075, y: -0.13067888, z: 0.99100816, w: -0.0032838106}
-  - _Position: {x: 0.5374707, y: 0.5702576, z: 0.000610359}
-    _Rotation: {x: -0.037332382, y: -0.09903581, z: 0.994377, w: -0.0035597687}
-  - _Position: {x: 0.51229507, y: 0.5749414, z: -0.0035520718}
-    _Rotation: {x: -0.08190494, y: -0.06687015, z: 0.99430895, w: -0.013027687}
-  - _Position: {x: 0.45901638, y: 0.51814985, z: -0.013414547}
-    _Rotation: {x: -0.15120602, y: -0.08173679, z: 0.98472047, w: -0.027954973}
-  - _Position: {x: 0.4525761, y: 0.5152225, z: -0.0073609874}
-    _Rotation: {x: -0.16144113, y: -0.07072215, z: 0.9833355, w: -0.044570457}
-  - _Position: {x: 0.47248244, y: 0.53454334, z: -0.011839867}
-    _Rotation: {x: -0.13626342, y: -0.07109607, z: 0.98720187, w: -0.042545713}
-  - _Position: {x: 0.5, y: 0.5322014, z: -0.009856246}
-    _Rotation: {x: -0.12162262, y: -0.07168989, z: 0.9894078, w: -0.033774976}
-  - _Position: {x: 0.5052693, y: 0.5222482, z: -0.0052805096}
-    _Rotation: {x: -0.09240256, y: -0.07314024, z: 0.9927504, w: -0.023642212}
+  - _Position: {x: -0.03805621, y: -0.0046838373, z: -0.023050256}
+    _Rotation: {x: 0.018506976, y: 0.056540906, z: -0.02185333, w: 0.99798954}
+  - _Position: {x: -0.04508196, y: -0.0058548003, z: -0.015472613}
+    _Rotation: {x: 0.008109197, y: 0.064372905, z: -0.009923656, w: 0.9978436}
+  - _Position: {x: -0.057962522, y: -0.01346603, z: -0.022659078}
+    _Rotation: {x: 0.018032508, y: 0.06481964, z: -0.022039942, w: 0.9974906}
+  - _Position: {x: -0.073770486, y: 0.006440282, z: -0.01374191}
+    _Rotation: {x: -0.048059534, y: 0.059161857, z: -0.019626737, w: 0.99689764}
+  - _Position: {x: -0.0790398, y: 0.09074942, z: -0.008738793}
+    _Rotation: {x: -0.180064, y: 0.0004779139, z: 0.00012802178, w: 0.98365474}
+  - _Position: {x: -0.055035137, y: 0.04800938, z: -0.0035585389}
+    _Rotation: {x: -0.17406443, y: 0.03802739, z: 0.00437404, w: 0.9839901}
+  - _Position: {x: -0.037470736, y: -0.070257604, z: 0.000610359}
+    _Rotation: {x: -0.13196494, y: 0.0497453, z: 0.0047433823, w: 0.98999405}
+  - _Position: {x: -0.012295082, y: -0.07494144, z: -0.0035520718}
+    _Rotation: {x: -0.0891052, y: 0.10913927, z: 0.017359536, w: 0.98987246}
+  - _Position: {x: 0.040983602, y: -0.018149883, z: -0.013414547}
+    _Rotation: {x: -0.108797036, y: 0.20126526, z: 0.037209917, w: 0.9727646}
+  - _Position: {x: 0.047423884, y: -0.015222475, z: -0.0073609874}
+    _Rotation: {x: -0.09412166, y: 0.21485645, z: 0.05931728, w: 0.9702883}
+  - _Position: {x: 0.02751755, y: -0.034543335, z: -0.011839867}
+    _Rotation: {x: -0.09466069, y: 0.18142761, z: 0.05664739, w: 0.97719723}
+  - _Position: {x: -0.000000007450581, y: -0.03220141, z: -0.009856246}
+    _Rotation: {x: -0.095472604, y: 0.16197033, z: 0.044979654, w: 0.98113585}
+  - _Position: {x: -0.005269319, y: -0.022248238, z: -0.0052805096}
+    _Rotation: {x: -0.09744365, y: 0.12310655, z: 0.031498168, w: 0.9870954}
+  - _Position: {x: -0.03805621, y: -0.0046838373, z: -0.023050256}
+    _Rotation: {x: 0.018506976, y: 0.056540906, z: -0.02185333, w: 0.99798954}
   _PupilUV: []
 --- !u!1 &47802853
 GameObject:
@@ -244,8 +247,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47802853}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.013259147, y: 0.060496517, z: -0.015832366, w: 0.9979548}
+  m_LocalPosition: {x: -0.0416025, y: -0.0052748886, z: -0.019225392}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -483,8 +486,12 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0.1756106, y: 0.1897067, z: 0.10466025}
+  - {x: 0.15453333, y: 0.19907439, z: 0.14337768}
+  - {x: 0.113560855, y: 0.19907439, z: 0.14867286}
+  - {x: 0.072566114, y: 0.18390758, z: 0.13212416}
+  - {x: 0.10301108, y: 0.1733578, z: 0.13707452}
+  - {x: 0.14516564, y: 0.1733578, z: 0.1263553}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -838,8 +845,23 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0.2739267, y: 0.2716739, z: -0.2192324}
+  - {x: 0.25757784, y: 0.1897067, z: -0.2414469}
+  - {x: 0.23177214, y: 0.117107145, z: -0.26048788}
+  - {x: 0.21069485, y: 0.044507615, z: -0.26658285}
+  - {x: 0.18497829, y: -0.016382314, z: -0.24432659}
+  - {x: 0.14516564, y: -0.088981844, z: -0.19094649}
+  - {x: 0.10301108, y: -0.14050409, z: -0.117795885}
+  - {x: 0.04212115, y: -0.18729794, z: -0.0438605}
+  - {x: -0.046916377, y: -0.21310362, z: -0.009902204}
+  - {x: -0.13352288, y: -0.18265864, z: -0.03691166}
+  - {x: -0.20612241, y: -0.13577569, z: -0.099156626}
+  - {x: -0.26701233, y: -0.07961414, z: -0.16564398}
+  - {x: -0.3091669, y: -0.011743018, z: -0.21316178}
+  - {x: -0.33961186, y: 0.06558492, z: -0.2278401}
+  - {x: -0.35132146, y: 0.12647486, z: -0.21614422}
+  - {x: -0.37123892, y: 0.19907439, z: -0.19338876}
+  - {x: -0.38176644, y: 0.28684068, z: -0.16730173}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1099,6 +1121,142 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!21 &731031848
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: furBall (Instance)
+  m_Shader: {fileID: 4800000, guid: 26d55355128f6594f94c634316017f65, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: caca9316c9c8b134ca328311671a26c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AAScale: 1
+    - _AlphaClip: 0
+    - _Blend: 0
+    - _BlendDst: 10
+    - _BlendSrc: 5
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EnvironmentReflections: 1
+    - _Eye1Open: 0.8649409
+    - _Eye2Open: 0.96825063
+    - _EyelidThickness: 0.0167
+    - _FurDepth: 0.362
+    - _FurDepthScale: 5
+    - _FurLayer: 800
+    - _FurStepMulti: 3
+    - _FurThreshold: 0.157
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _IrisSize: 0.703
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _Radius: 0.47
+    - _ReceiveShadows: 1
+    - _Shininess: 61.19
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _UVScale: 1.559
+    - _WorkflowMode: 1
+    - _ZWrite: 0
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BlockBall_Offset_Scale: {r: 0, g: 0, b: 0, a: 0.8}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DownlidOffset: {r: 0, g: -0.03, b: 0, a: 1}
+    - _Downlid_Start_Range: {r: 0, g: -1.0349802, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Eyeball_Pos_Scale: {r: 0.25274763, g: -0.000000018795896, b: 0.34787735, a: 0.34}
+    - _FurColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HighlightOffset: {r: 0.05, g: 0.05, b: 0, a: 1}
+    - _IrisColor: {r: 0.089999996, g: 0.0315, b: 0.0135, a: 1}
+    - _Iris_UV: {r: 0.5, g: 0.5, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _UpDownLid_XYRot: {r: 0, g: 0, b: 0, a: 0}
+    - _UplidOffset: {r: 0, g: 0.03, b: -0, a: 1}
+    - _Uplid_Start_Range: {r: 0, g: 1.5323992, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &850630156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,8 +1331,12 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: -0.1124456, y: 0.1897067, z: 0.15046218}
+  - {x: -0.15460016, y: 0.20960188, z: 0.17337185}
+  - {x: -0.19675474, y: 0.21551238, z: 0.17497332}
+  - {x: -0.2319281, y: 0.20380278, z: 0.14013739}
+  - {x: -0.19675474, y: 0.18390758, z: 0.15657376}
+  - {x: -0.15460016, y: 0.1779971, z: 0.16039038}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -1456,6 +1618,7 @@ GameObject:
   - component: {fileID: 1313802207}
   - component: {fileID: 1313802206}
   - component: {fileID: 1313802210}
+  - component: {fileID: 1313802211}
   m_Layer: 1
   m_Name: furBall
   m_TagString: Untagged
@@ -1497,7 +1660,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 90b8552ae16cb2347bda98a095d3a015, type: 2}
+  - {fileID: 731031848}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1534,8 +1697,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313802205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.013259147, y: 0.060496517, z: -0.015832366, w: 0.9979548}
+  m_LocalPosition: {x: -0.0416025, y: -0.0052748886, z: -0.019225392}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1554,10 +1717,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372442555c619394092be7d04348066d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SelfUpdate: 0
   _Path: Assets/Emotions/FurBallParams
   _BaseParamsName: baseParams
   _BaseParams: {fileID: 11400000, guid: 297071c29456aa44e9b0fac9bc703e45, type: 2}
   _BindFaceAnimation: {fileID: 17069874}
+  _AniParams:
+    _Pos: {x: -0.0416025, y: -0.0052748886, z: -0.019225392}
+    _Rot: {x: 0.013259147, y: 0.060496517, z: -0.015832366, w: 0.9979548}
+    _Eye1Open: 0.8649409
+    _Eye2Open: 0.96825063
+--- !u!111 &1313802211
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313802205}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: f6461835495c7ab4e83a9b95184d55b5, type: 2}
+  m_Animations:
+  - {fileID: 0}
+  - {fileID: 7400000, guid: f6461835495c7ab4e83a9b95184d55b5, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1327010782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,7 +1770,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327010782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.17451763, y: 0.19441281, z: 0.15931816}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2160,7 +2346,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778589144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.12174644, y: 0.18622722, z: 0.13204414}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2340,8 +2526,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: -0.021110693, y: 0.16862941, z: 0.16914737}
+  - {x: -0.021110693, y: 0.10075826, z: 0.17781788}
+  - {x: -0.021110693, y: 0.044507615, z: 0.19888435}
+  - {x: -0.021110693, y: 0.0035128891, z: 0.1902934}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

@@ -242,18 +242,20 @@ public class FaceAnimation : MonoBehaviour
         }
     }
 
+    [ContextMenu("Pause")]
     void Pause()
     {
         if(_State==State.Play)
         {
             _State = State.Pause;
         }
-
     }
 
+    [ContextMenu("Stop")]
     void Stop()
     {
-
+        _State = State.Stop;
+        _TimeLine = 0;
     }
 
     List<Vector3> lerp_pts(List<Vector3> prePts,List<Vector3> postPts,float ratio)

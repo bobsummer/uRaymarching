@@ -39,14 +39,13 @@ namespace FurBall
 
     public class FurBallParams : MonoBehaviour
     {
+        public bool   _SelfUpdate = true;
         public string _Path;
         public string _BaseParamsName;
         public BaseParams _BaseParams;
 
         public FaceAnimation _BindFaceAnimation;
-
         public AnimationParams _AniParams = new AnimationParams();
-
         private MatNameIDs _MatNameIDs;
 
         MatNameIDs matNameIDs
@@ -152,6 +151,17 @@ namespace FurBall
             EditorApplication.update -= Update;
 		}
 
+        struct KeyFrames_Type
+		{
+            public KeyFrames_Type(Keyframe[] keys,Type type)
+			{
+                _keys = keys;
+                _type = type;
+			}
+            public Keyframe[]  _keys;
+            public Type        _type;
+		}
+
         [ContextMenu("ExportAnimClip")]
         void ExportAnimClip()
         {
@@ -159,39 +169,46 @@ namespace FurBall
 			{
                 AnimationClip animClip = new AnimationClip();
                 animClip.legacy = true;
+                animClip.wrapMode = WrapMode.Loop;
 
                 int keyCount = _BindFaceAnimation._FaceTrans.Count;
 
-                Dictionary<string, Keyframe[]> name_keyframes = new Dictionary<string, Keyframe[]>();
+                Dictionary<string, KeyFrames_Type> name_keyframes = new Dictionary<string, KeyFrames_Type>();
 
-                name_keyframes["localPosition.x"] = new Keyframe[keyCount];
-                name_keyframes["localPosition.y"] = new Keyframe[keyCount];
-                name_keyframes["localPosition.z"] = new Keyframe[keyCount];
+                name_keyframes["localPosition.x"] = new KeyFrames_Type(new Keyframe[keyCount],typeof(Transform));
+                name_keyframes["localPosition.y"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
+                name_keyframes["localPosition.z"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
 
-                name_keyframes["rotation.x"] = new Keyframe[keyCount];
-                name_keyframes["rotation.y"] = new Keyframe[keyCount];
-                name_keyframes["rotation.z"] = new Keyframe[keyCount];
-                name_keyframes["rotation.w"] = new Keyframe[keyCount];    
+                name_keyframes["localRotation.x"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
+                name_keyframes["localRotation.y"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
+                name_keyframes["localRotation.z"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
+                name_keyframes["localRotation.w"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
+
+                name_keyframes["_Eye1Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
+                name_keyframes["_Eye2Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
 
                 for (int iKey = 0; iKey < keyCount; iKey++)
 				{
                     FaceAnimation.Trans trans = _BindFaceAnimation._FaceTrans[iKey];
-                    float key = _BindFaceAnimation._Keys[iKey];
+                    float key = _BindFaceAnimation._Keys[iKey] * _BindFaceAnimation._TimeLength;
                     
-                    name_keyframes["localPosition.x"][iKey] = new Keyframe(key, trans._Position.x);
-                    name_keyframes["localPosition.y"][iKey] = new Keyframe(key, trans._Position.y);
-                    name_keyframes["localPosition.z"][iKey] = new Keyframe(key, trans._Position.z);
+                    name_keyframes["localPosition.x"]._keys[iKey] = new Keyframe(key, trans._Position.x);
+                    name_keyframes["localPosition.y"]._keys[iKey] = new Keyframe(key, trans._Position.y);
+                    name_keyframes["localPosition.z"]._keys[iKey] = new Keyframe(key, trans._Position.z);
 
-                    name_keyframes["rotation.x"][iKey] = new Keyframe(key, trans._Rotation.x);
-                    name_keyframes["rotation.y"][iKey] = new Keyframe(key, trans._Rotation.y);
-                    name_keyframes["rotation.z"][iKey] = new Keyframe(key, trans._Rotation.z);
-                    name_keyframes["rotation.w"][iKey] = new Keyframe(key, trans._Rotation.w);
+                    name_keyframes["localRotation.x"]._keys[iKey] = new Keyframe(key, trans._Rotation.x);
+                    name_keyframes["localRotation.y"]._keys[iKey] = new Keyframe(key, trans._Rotation.y);
+                    name_keyframes["localRotation.z"]._keys[iKey] = new Keyframe(key, trans._Rotation.z);
+                    name_keyframes["localRotation.w"]._keys[iKey] = new Keyframe(key, trans._Rotation.w);
+
+                    name_keyframes["_Eye1Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye1_frame_heights[iKey] / _BindFaceAnimation.Data._eye1_max_height);
+                    name_keyframes["_Eye2Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye2_frame_heights[iKey] / _BindFaceAnimation.Data._eye2_max_height);
                 }
 
-                foreach(var k_v in name_keyframes)
+                foreach (var k_v in name_keyframes)
 				{
-                    var curve = new AnimationCurve(k_v.Value);
-                    animClip.SetCurve("", typeof(Transform), k_v.Key, curve);                  
+                    var curve = new AnimationCurve(k_v.Value._keys);
+                    animClip.SetCurve("", k_v.Value._type, k_v.Key, curve);                  
 				}
 
                 AssetDatabase.CreateAsset(animClip, "Assets/anim.asset");
@@ -261,11 +278,14 @@ namespace FurBall
             if (_BindFaceAnimation)
 			{
                 _BindFaceAnimation._Update();
-                if(face_to_furball_animation(_BindFaceAnimation, ref _AniParams))
+                if(_SelfUpdate)
 				{
-                    syncAniParams();
-                }                
-            }
+                    if (face_to_furball_animation(_BindFaceAnimation, ref _AniParams))
+                    {
+                        syncAniParams();
+                    }
+                }
+			}
 		}
 	}
 }
