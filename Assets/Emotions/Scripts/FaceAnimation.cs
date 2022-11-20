@@ -277,7 +277,7 @@ public class FaceAnimation : MonoBehaviour
         LoadData();
 	}
 
-    public void _Update()
+    public void _Update(float delta_time)
     {
         if(_State==State.Play)
 		{
@@ -438,7 +438,7 @@ public class FaceAnimation : MonoBehaviour
                 curEye2Height = Mathf.Lerp(preHeight, postHeight, ratio_between_keys);
             }
 
-            _TimeLine += Time.deltaTime;
+            _TimeLine += delta_time;
 		}
         
     }

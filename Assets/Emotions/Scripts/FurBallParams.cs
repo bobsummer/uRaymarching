@@ -94,6 +94,19 @@ namespace FurBall
 			}
 		}
 
+        Animator _animator;
+        Animator animator
+        {
+            get
+            {
+                if (_animator == null)
+                {
+                    _animator = GetComponent<Animator>();
+                }
+                return _animator;
+            }
+        }
+
         [ContextMenu("NewBaseParams")]
         void newBaseParams()
 		{
@@ -140,13 +153,13 @@ namespace FurBall
         }
 
         [ContextMenu("OpenEditorUpdate")]
-        void openEditorUpdate()
+        public void openEditorUpdate()
 		{
             EditorApplication.update += Update;
 		}
 
         [ContextMenu("CloseEditorUpdate")]
-        void closeEditorUpdate()
+        public void closeEditorUpdate()
 		{
             EditorApplication.update -= Update;
 		}
@@ -167,10 +180,6 @@ namespace FurBall
         {
             if(_BindFaceAnimation != null)
 			{
-                AnimationClip animClip = new AnimationClip();
-                animClip.legacy = true;
-                animClip.wrapMode = WrapMode.Loop;
-
                 int keyCount = _BindFaceAnimation._FaceTrans.Count;
 
                 Dictionary<string, KeyFrames_Type> name_keyframes = new Dictionary<string, KeyFrames_Type>();
@@ -184,8 +193,8 @@ namespace FurBall
                 name_keyframes["localRotation.z"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
                 name_keyframes["localRotation.w"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
 
-                name_keyframes["_Eye1Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
-                name_keyframes["_Eye2Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
+                name_keyframes["material._Eye1Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
+                name_keyframes["material._Eye2Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
 
                 for (int iKey = 0; iKey < keyCount; iKey++)
 				{
@@ -201,17 +210,30 @@ namespace FurBall
                     name_keyframes["localRotation.z"]._keys[iKey] = new Keyframe(key, trans._Rotation.z);
                     name_keyframes["localRotation.w"]._keys[iKey] = new Keyframe(key, trans._Rotation.w);
 
-                    name_keyframes["_Eye1Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye1_frame_heights[iKey] / _BindFaceAnimation.Data._eye1_max_height);
-                    name_keyframes["_Eye2Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye2_frame_heights[iKey] / _BindFaceAnimation.Data._eye2_max_height);
+                    name_keyframes["material._Eye1Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye1_frame_heights[iKey] / _BindFaceAnimation.Data._eye1_max_height);
+                    name_keyframes["material._Eye2Open"]._keys[iKey] = new Keyframe(key, _BindFaceAnimation.Data._eye2_frame_heights[iKey] / _BindFaceAnimation.Data._eye2_max_height);
                 }
 
+
+                AnimationClip animClip_legacy = new AnimationClip();
+                animClip_legacy.legacy = true;
+                animClip_legacy.wrapMode = WrapMode.Loop;
                 foreach (var k_v in name_keyframes)
 				{
                     var curve = new AnimationCurve(k_v.Value._keys);
-                    animClip.SetCurve("", k_v.Value._type, k_v.Key, curve);                  
+                    animClip_legacy.SetCurve("", k_v.Value._type, k_v.Key, curve);                  
 				}
+                AssetDatabase.CreateAsset(animClip_legacy, "Assets/anim_legacy.asset");
 
-                AssetDatabase.CreateAsset(animClip, "Assets/anim.asset");
+
+                AnimationClip animClip_nrm = new AnimationClip();
+                animClip_nrm.wrapMode = WrapMode.Loop;
+                foreach (var k_v in name_keyframes)
+                {
+                    var curve = new AnimationCurve(k_v.Value._keys);
+                    animClip_nrm.SetCurve("", k_v.Value._type, k_v.Key, curve);
+                }
+                AssetDatabase.CreateAsset(animClip_nrm, "Assets/anim_nrm.asset");
             } 
 
         }
@@ -275,16 +297,30 @@ namespace FurBall
 		private void Update()
 		{
             syncBaseParams();
-            if (_BindFaceAnimation)
+
+            float delta_time = Application.isPlaying ? Time.deltaTime : 0.033f;
+
+            if(_SelfUpdate)
 			{
-                _BindFaceAnimation._Update();
-                if(_SelfUpdate)
-				{
+                if (_BindFaceAnimation)
+                {
+                    _BindFaceAnimation._Update(delta_time);
                     if (face_to_furball_animation(_BindFaceAnimation, ref _AniParams))
                     {
                         syncAniParams();
                     }
                 }
+            }
+            else
+			{
+                if(!Application.isPlaying)
+				{
+                    if(animator!=null)
+					{
+                        animator.Update(delta_time);
+					}
+                    FFExpression.ExpressionExporter.instance.saveRT();
+				}
 			}
 		}
 	}
