@@ -193,8 +193,8 @@ namespace FurBall
                 name_keyframes["localRotation.z"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
                 name_keyframes["localRotation.w"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Transform));
 
-                name_keyframes["material._Eye1Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
-                name_keyframes["material._Eye2Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(Material));
+                name_keyframes["material._Eye1Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(MeshRenderer));
+                name_keyframes["material._Eye2Open"] = new KeyFrames_Type(new Keyframe[keyCount], typeof(MeshRenderer));
 
                 for (int iKey = 0; iKey < keyCount; iKey++)
 				{
