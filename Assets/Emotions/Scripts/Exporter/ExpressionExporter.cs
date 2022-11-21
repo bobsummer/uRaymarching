@@ -7,6 +7,7 @@ using System.Drawing;
 using UnityEditor;
 using FurBall;
 using UnityEngine.Rendering;
+using System;
 
 namespace FFExpression
 {
@@ -23,8 +24,14 @@ namespace FFExpression
         private static ExpressionExporter _Instance = null;
 
         private int _FrameCounter = 0;
+
+        [SerializeField]
         private List<string> _ExpressionPaths = new List<string>();
+
+        [SerializeField]
         private List<string> _ExpressionNames = new List<string>();
+
+        public Color32 _KeyColor = new Color32(180, 0, 180,255);
 
         private List<AnimationClip> _AnimClips = new List<AnimationClip>();
         private int _curAnimClipIdx = 0;
@@ -106,7 +113,8 @@ namespace FFExpression
             }
 
             _AnimClips.Clear();
-
+            _ExpressionNames.Clear();
+            _ExpressionPaths.Clear();
 
             if (Directory.Exists(_AnimClipsFolder))
             {
@@ -230,8 +238,8 @@ namespace FFExpression
                 gif_encoder.Start(gif_file);
                 //gif_encoder.SetDelay(expression._GifFrameDelay);
                 gif_encoder.SetRepeat(0);
-                System.Drawing.Color key_color = System.Drawing.Color.FromArgb(156, 156, 156);
-                gif_encoder.SetTransparent(key_color);
+                System.Drawing.Color key_color = System.Drawing.Color.FromArgb(_KeyColor.r, _KeyColor.g, _KeyColor.b);
+                //gif_encoder.SetTransparent(key_color);
                 for (int iPNG = 0; iPNG < pngfiles.Length; iPNG++)
                 {
                     var png_file = pngfiles[iPNG];

@@ -345,7 +345,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 0.019607844}
+  m_BackGroundColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 0.019607844}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -386,7 +386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267027275}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 1.37}
+  m_LocalPosition: {x: 0, y: 0, z: 1.876}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1197,6 +1197,15 @@ MonoBehaviour:
   _AnimClipsFolder: Assets/FaceAnims/
   _RenderTexture: {fileID: 1576672210}
   _useRT: 1
+  _ExpressionPaths:
+  - D:/Expressions/anim_nrm
+  - D:/Expressions/anim_nrm_mirror
+  _ExpressionNames:
+  - anim_nrm
+  - anim_nrm_mirror
+  _KeyColor:
+    serializedVersion: 2
+    rgba: 4289986740
   _animCtrl: {fileID: 9100000, guid: 923f94eb13dc43c4d8376af25a5a9480, type: 2}
 --- !u!111 &1313802214
 Animation:
@@ -1207,9 +1216,9 @@ Animation:
   m_GameObject: {fileID: 1313802205}
   m_Enabled: 0
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 91df1e7fb3d1ca046bb1a9d4f606b4f4, type: 2}
+  m_Animation: {fileID: 0}
   m_Animations:
-  - {fileID: 7400000, guid: 91df1e7fb3d1ca046bb1a9d4f606b4f4, type: 2}
+  - {fileID: 0}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
