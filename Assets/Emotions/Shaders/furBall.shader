@@ -37,6 +37,9 @@ Shader "Unlit/furBall"
 
 		_AAScale("AAScale",Float) = 1
 
+		_LinearVelParam("LinearVelParam",Range(0.1,0.4)) = 0.25
+		_AngularVelParam("AngularVelParam",Range(0.01,0.3)) = 0.03
+
 		[Header(Pass)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
 		[Enum(UnityEngine.Rendering.BlendMode)] _BlendSrc("Blend Src", Float) = 5
@@ -130,7 +133,13 @@ Shader "Unlit/furBall"
 			float  _Eye1Open;
 			float  _Eye2Open;
 
-			float3 animData;			
+			float3 animData;
+			
+			float3 _LinearVel;
+			float3 _AngularVel;
+
+			float _LinearVelParam;
+			float _AngularVelParam;
 
             float3 curl(float3 p,float3x3 tbn,float3 vel,float3 angular_vel)
             {
@@ -153,11 +162,11 @@ Shader "Unlit/furBall"
 	            }
 
 	            float3  vel_tbn = mul(inv_tbn,vel);
-	            vel_tbn *= 1.0;  //vel param
+	            vel_tbn *= _LinearVelParam;  //vel param
 
 	            float3  linear_vel_tbn = mul(inv_tbn,linear_vel);
 
-	            linear_vel_tbn *= 0.03; //angular param
+	            linear_vel_tbn *= _AngularVelParam; //angular param
 	            vel_tbn += linear_vel_tbn;
 
 	            // float3 offset = cos(_Time.y*1.5)*t*t*0.4 * float3(0.0,1.0,0.0);
@@ -194,7 +203,7 @@ Shader "Unlit/furBall"
 		            return 0.0;
 	            }
 
-	            //pos = curl(pos,tbn,vel,angular_vel);
+	            pos = curl(pos,tbn,_LinearVel,_AngularVel);
 
 	            float3 uvr = cartesianToSpherical(pos,0.0);
 	            uv = uvr.xy;

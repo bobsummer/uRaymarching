@@ -35,6 +35,9 @@ namespace FurBall
 
         public Mat_NameID _Eye1Open;
         public Mat_NameID _Eye2Open;
+
+        public Mat_NameID _LinearVel;
+        public Mat_NameID _AngularVel;
     }
 
     public class FurBallParams : MonoBehaviour
@@ -42,11 +45,13 @@ namespace FurBall
         public bool   _SelfUpdate = true;
         public string _Path;
         public string _BaseParamsName;
-        public BaseParams _BaseParams;
+        public BaseParams _BaseParams;        
 
         public FaceAnimation _BindFaceAnimation;
         public AnimationParams _AniParams = new AnimationParams();
         private MatNameIDs _MatNameIDs;
+
+        private bool _OpenSaveRT = true;
 
         MatNameIDs matNameIDs
 		{
@@ -152,13 +157,11 @@ namespace FurBall
             AssetDatabase.CreateAsset(_BaseParams, fullPath);
         }
 
-        [ContextMenu("OpenEditorUpdate")]
         public void openEditorUpdate()
 		{
             EditorApplication.update += Update;
 		}
 
-        [ContextMenu("CloseEditorUpdate")]
         public void closeEditorUpdate()
 		{
             EditorApplication.update -= Update;
@@ -293,6 +296,13 @@ namespace FurBall
             mat.SetFloat(matNameIDs._Eye2Open.ID, _AniParams._Eye2Open);
         }
 
+        public void Tick()
+		{
+            _OpenSaveRT = false;
+            Update();
+            _OpenSaveRT = true;
+		}
+
         [ExecuteInEditMode]
 		private void Update()
 		{
@@ -313,13 +323,22 @@ namespace FurBall
             }
             else
 			{
+                if(animator!=null)
+				{
+                    mat.SetVector(_MatNameIDs._LinearVel.ID, animator.velocity);
+                    mat.SetVector(_MatNameIDs._AngularVel.ID, animator.angularVelocity);
+                    Debug.LogFormat("Linear Vel is ({0}),Ang Vel is ({1})", animator.velocity.ToString(), animator.angularVelocity.ToString());
+                }
                 if(!Application.isPlaying)
 				{
                     if(animator!=null)
 					{
                         animator.Update(delta_time);
 					}
-                    FFExpression.ExpressionExporter.instance.saveRT();
+                    if(_OpenSaveRT)
+					{
+                        FFExpression.ExpressionExporter.instance.saveRT();
+                    }                    
 				}
 			}
 		}

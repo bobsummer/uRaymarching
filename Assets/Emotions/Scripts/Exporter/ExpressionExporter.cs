@@ -13,6 +13,8 @@ namespace FFExpression
 {
     public class ExpressionExporter : MonoBehaviour
     {
+        [Range(0.1f, 3.0f)]
+        public float _AnimatorSpeed = 1.0f;
         public int _Width = 240;
         public int _Height = 240;
         public string _OutputFolderName = "D:/Expressions/";
@@ -99,6 +101,14 @@ namespace FFExpression
         public void Export()
         {
             _Instance = this;
+
+            if(animator!=null)
+			{
+                animator.speed = _AnimatorSpeed;
+                animator.runtimeAnimatorController = _animCtrl;
+			}
+
+
             if(Directory.Exists(_OutputFolderName))
             {
                 Directory.Delete(_OutputFolderName,true);

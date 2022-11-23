@@ -26,6 +26,45 @@ namespace FFUtils
 		}
 	}
 
+	public class PosRotDelta_Recorder
+	{
+		Vector3    _prePosition;
+		Quaternion _preRotation;
+
+		Vector3    _deltaPostion;
+		Quaternion _deltaRotation;
+
+		int _dataPhase = 0;
+		public bool hasDelta
+		{
+			get
+			{
+				return _dataPhase>=2;
+			}
+		}
+
+		public void pushData(Vector3 pos, Quaternion rot)
+		{
+			if (_dataPhase == 0)
+			{
+				_prePosition = pos;
+				_preRotation = rot;
+				_dataPhase++;
+			}
+			else if (_dataPhase == 1)
+			{
+				_dataPhase++;
+			}
+
+			if (hasDelta)
+			{
+				_deltaPostion = pos - _prePosition;
+				//Quaternion.
+			}
+			
+		}
+	}
+
 	public class Mat_NameID
 	{
 		private string _Name;
