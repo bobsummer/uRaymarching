@@ -39,19 +39,29 @@ namespace FFUtils
 		{
 			get
 			{
-				return _dataPhase>=2;
+				return _dataPhase>=1;
+			}
+		}
+
+		public Vector3 deltaPos
+		{
+			get
+			{
+				return _deltaPostion;
+			}
+		}
+
+		public Quaternion deltaRot
+		{
+			get
+			{
+				return _deltaRotation;
 			}
 		}
 
 		public void pushData(Vector3 pos, Quaternion rot)
 		{
 			if (_dataPhase == 0)
-			{
-				_prePosition = pos;
-				_preRotation = rot;
-				_dataPhase++;
-			}
-			else if (_dataPhase == 1)
 			{
 				_dataPhase++;
 			}
@@ -61,7 +71,8 @@ namespace FFUtils
 				_deltaPostion = pos - _prePosition;
 				//Quaternion.
 			}
-			
+			_prePosition = pos;
+			_preRotation = rot;
 		}
 	}
 

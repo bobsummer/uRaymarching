@@ -8,7 +8,7 @@ using System;
 
 namespace FurBall
 {
-    [System.Serializable]
+    [Serializable]
     public class AnimationParams
 	{
         public Vector3 _Pos = Vector3.zero;
@@ -244,7 +244,6 @@ namespace FurBall
         void syncBaseParams()
 		{            
             mat.SetFloat(matNameIDs._Radius.ID, _BaseParams._Radius);
-
 			{
                 Vector4 eye_Pos_Scale = Maths.sphericalToCartesian(_BaseParams._EyeUVR, Vector3.zero);
                 eye_Pos_Scale.w = _BaseParams._EyeScale;
@@ -303,12 +302,15 @@ namespace FurBall
             _OpenSaveRT = true;
 		}
 
+        PosRotDelta_Recorder m_PosRotRecorder = new PosRotDelta_Recorder();
+
         [ExecuteInEditMode]
 		private void Update()
 		{
             syncBaseParams();
 
-            float delta_time = Application.isPlaying ? Time.deltaTime : 0.033f;
+            float delta_time = Application.isPlaying ? Time.deltaTime : 0.0167f;
+            m_PosRotRecorder.pushData(transform.position, transform.rotation);
 
             if(_SelfUpdate)
 			{
@@ -325,9 +327,20 @@ namespace FurBall
 			{
                 if(animator!=null)
 				{
-                    mat.SetVector(_MatNameIDs._LinearVel.ID, animator.velocity);
-                    mat.SetVector(_MatNameIDs._AngularVel.ID, animator.angularVelocity);
-                    Debug.LogFormat("Linear Vel is ({0}),Ang Vel is ({1})", animator.velocity.ToString(), animator.angularVelocity.ToString());
+                    if(m_PosRotRecorder.hasDelta)
+					{
+                        Vector3 vel = m_PosRotRecorder.deltaPos / delta_time;
+                        Vector3 angVel = Vector3.zero;
+
+                        vel = animator.velocity;
+                        angVel = animator.angularVelocity;
+
+                        //angVel = Vector3.zero;
+
+                        mat.SetVector(_MatNameIDs._LinearVel.ID, vel);
+                        mat.SetVector(_MatNameIDs._AngularVel.ID, angVel);
+                        Debug.LogFormat("Linear Vel is ({0}),Ang Vel is ({1}), DeltaTime is ({2})", vel.ToString(), angVel.ToString(), delta_time);
+                    }
                 }
                 if(!Application.isPlaying)
 				{

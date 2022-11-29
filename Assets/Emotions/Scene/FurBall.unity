@@ -835,7 +835,7 @@ Material:
     m_Floats:
     - _AAScale: 1
     - _AlphaClip: 0
-    - _AngularVelParam: 0.0807
+    - _AngularVelParam: 0.5
     - _Blend: 0
     - _BlendDst: 10
     - _BlendSrc: 5
@@ -860,7 +860,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _IrisSize: 0.703
-    - _LinearVelParam: 0.1486
+    - _LinearVelParam: 0.1
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -1122,8 +1122,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313802205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.005558857, y: 0.0030346462, z: 0.0020949314, w: 0.99997777}
+  m_LocalPosition: {x: 0.0014473718, y: -0.00071429164, z: 0.0010192209}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1313802205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a124b10890f48d346aa7a8c6ac4d472b, type: 3}
+  m_Script: {fileID: 11500000, guid: 586818a0186573547a77c6990ff9d6af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _AnimatorSpeed: 2
@@ -1189,7 +1189,7 @@ MonoBehaviour:
   _Height: 240
   _OutputFolderName: D:/Expressions/
   _AnimClipsFolder: Assets/FaceAnims/
-  _RenderTexture: {fileID: 1576672210}
+  _RenderTexture: {fileID: 1984245171}
   _useRT: 1
   _ExpressionPaths:
   - D:/Expressions/anim_nrm
@@ -1300,43 +1300,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327010782}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!84 &1576672210
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 240
-  m_Height: 240
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &1778589144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,3 +1516,40 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!84 &1984245171
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 240
+  m_Height: 240
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2

@@ -37,8 +37,8 @@ Shader "Unlit/furBall"
 
 		_AAScale("AAScale",Float) = 1
 
-		_LinearVelParam("LinearVelParam",Range(0.1,0.4)) = 0.25
-		_AngularVelParam("AngularVelParam",Range(0.01,0.3)) = 0.03
+		_LinearVelParam("LinearVelParam",Range(0.1,0.33)) = 0.1
+		_AngularVelParam("AngularVelParam",Range(0.01,0.5)) = 0.03
 
 		[Header(Pass)]
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling", Int) = 2
